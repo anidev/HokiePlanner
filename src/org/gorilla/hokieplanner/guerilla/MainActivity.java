@@ -1,5 +1,6 @@
-package org.hokieplanner;
+package org.gorilla.hokieplanner.guerilla;
 
+import org.gorilla.hokieplanner.guerilla.R;
 import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
