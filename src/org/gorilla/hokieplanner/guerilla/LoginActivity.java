@@ -10,6 +10,8 @@ import android.os.Bundle;
  * Activity for logging into HokieSpa
  *
  * @author Anirudh Bagde
+ * @author Weyland Chiang
+ * @author Sayan Ekambarapu
  * @version Nov 9, 2014
  */
 public class LoginActivity
@@ -21,6 +23,13 @@ public class LoginActivity
         setContentView(R.layout.activity_login);
     }
 
+    /**
+     * Called by the login button in the layout, this method is specified in the
+     * XML file for the layout
+     *
+     * @param button
+     *            The button that was clicked to call this method
+     */
     public void loginSubmit(View button) {
         String pid =
             ((EditText)findViewById(R.id.login_pid_field)).getText()
@@ -30,7 +39,7 @@ public class LoginActivity
                 .toString();
 
         // TODO Do the login here
-        if(pid.trim().equals("")) {
+        if (pid.trim().equals("")) {
             return;
         }
 

@@ -1,6 +1,6 @@
 package org.gorilla.hokieplanner.guerilla;
 
-import android.webkit.WebView.FindListener;
+import java.util.Locale;
 import org.gorilla.hokieplanner.guerilla.R;
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
@@ -14,15 +14,12 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation
@@ -30,6 +27,11 @@ import android.widget.Toast;
  * "https://developer.android.com/design/patterns/navigation-drawer.html#Interaction"
  * > design guidelines</a> for a complete explanation of the behaviors
  * implemented here.
+ *
+ * @author Anirudh Bagde
+ * @author Weyland Chiang
+ * @author Sayan Ekambarapu
+ * @version Nov 9, 2014
  */
 public class NavigationDrawerFragment
     extends Fragment {
@@ -67,6 +69,9 @@ public class NavigationDrawerFragment
     private boolean                   mFromSavedInstanceState;
     private boolean                   mUserLearnedDrawer;
 
+    /**
+     * Create a new NavigationDrawerFragment object.
+     */
     public NavigationDrawerFragment() {
     }
 
@@ -160,12 +165,20 @@ public class NavigationDrawerFragment
         mAccountListView.setAdapter(new ArrayAdapter<String>(
             getActionBar().getThemedContext(),
             R.layout.list_item_small,
-            new String[] { (Prefs.getUserPID() + "@vt.edu").toUpperCase(),
-                getString(actionText).toUpperCase() }));
+            new String[] {
+                (Prefs.getUserPID() + "@vt.edu").toUpperCase(Locale
+                    .getDefault()),
+                getString(actionText)
+                    .toUpperCase(Locale.getDefault()) }));
 
         return mDrawerListContainer;
     }
 
+    /**
+     * Check whether this particular navigation drawer is open
+     *
+     * @return True if the drawer is open, false if not
+     */
     public boolean isDrawerOpen() {
         return mDrawerLayout != null
             && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
@@ -244,6 +257,7 @@ public class NavigationDrawerFragment
                         .apply();
                 }
 
+                showGlobalContextActionBar();
                 getActivity().supportInvalidateOptionsMenu(); // calls
                                                               // onPrepareOptionsMenu()
             }
@@ -347,6 +361,9 @@ public class NavigationDrawerFragment
     public static interface NavigationDrawerCallbacks {
         /**
          * Called when an item in the navigation drawer is selected.
+         *
+         * @param position
+         *            Position in the drawer that the user selected
          */
         void onNavigationDrawerItemSelected(int position);
 

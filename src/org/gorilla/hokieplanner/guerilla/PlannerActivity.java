@@ -21,6 +21,8 @@ import android.support.v4.widget.DrawerLayout;
  * various fragments for the app
  *
  * @author Anirudh Bagde
+ * @author Weyland Chiang
+ * @author Sayan Ekambarapu
  * @version Nov 9, 2014
  */
 public class PlannerActivity
@@ -58,6 +60,13 @@ public class PlannerActivity
             drawerLayout);
     }
 
+    /**
+     * Navigation drawer callback for when a specific navigation drawer item is
+     * selected
+     *
+     * @param position
+     *            Position in the drawer that the user selected
+     */
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
@@ -68,16 +77,29 @@ public class PlannerActivity
                 R.id.main_container,
                 PlaceholderFragment.newInstance(position + 1))
             .commit();
+        restoreActionBar();
     }
 
+    /**
+     * Navigation drawer callback for when the user presses the login/logout
+     * button at the bottom of the navigation drawer. It will set the saved PID
+     * to null and replace the current activity with the login activity.
+     */
     @Override
     public void resetLogin() {
         Prefs.setUserPID(null);
-        Intent intent=new Intent(this,LoginActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
     }
 
+    /**
+     * Called by the placeholder fragment when the selected fragment has been
+     * attached
+     *
+     * @param number
+     *            Index of section selected in the navigation drawer
+     */
     public void onSectionAttached(int number) {
         switch (number) {
             case 1:
@@ -92,6 +114,10 @@ public class PlannerActivity
         }
     }
 
+    /**
+     * Called to restore the action bar to normal after closing the navigation
+     * drawer, if it was changed
+     */
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar
@@ -128,6 +154,10 @@ public class PlannerActivity
 
         /**
          * Returns a new instance of this fragment for the given section number.
+         *
+         * @param sectionNumber
+         *            The index of the section this fragment is for
+         * @return The initialized fragment object
          */
         public static PlaceholderFragment newInstance(
             int sectionNumber) {
@@ -138,6 +168,11 @@ public class PlannerActivity
             return fragment;
         }
 
+        /**
+         * Initialize the fragment. This constructor does nothing,
+         * PlaceholderFragment.newInstance should be used to create a
+         * PlaceholderFragment object instead.
+         */
         public PlaceholderFragment() {
         }
 

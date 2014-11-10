@@ -9,6 +9,8 @@ import android.support.v7.app.ActionBarActivity;
  * activity or first ask to login
  *
  * @author Anirudh Bagde
+ * @author Weyland Chiang
+ * @author Sayan Ekambarapu
  * @version Nov 9, 2014
  */
 public class MainActivity
