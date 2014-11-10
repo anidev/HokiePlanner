@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/login_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/login_label_text"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android:id="@+id/login_pid_field"
+        android:layout_width="@dimen/login_width"
+        android:layout_height="wrap_content"
+        android:hint="@string/login_pid_hint"
+        android:inputType="textVisiblePassword" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/login_pass_field"
+        android:layout_width="@dimen/login_width"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/login_pass_hint"
+        android:inputType="textPassword" />
+
+    <LinearLayout
+        android:id="@+id/login_submit_row"
+        android:layout_width="@dimen/login_width"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/login_submit_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="loginSubmit"
+            android:text="@string/login_submit_text" />
+
+        <Button
+            android:id="@+id/login_skip_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_skip_text" />
+    </LinearLayout>
+
+</LinearLayout>

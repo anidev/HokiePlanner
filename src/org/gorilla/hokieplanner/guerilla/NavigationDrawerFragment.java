@@ -1,5 +1,6 @@
 package org.gorilla.hokieplanner.guerilla;
 
+import android.webkit.WebView.FindListener;
 import org.gorilla.hokieplanner.guerilla.R;
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
@@ -57,6 +58,7 @@ public class NavigationDrawerFragment
     private ActionBarDrawerToggle     mDrawerToggle;
 
     private DrawerLayout              mDrawerLayout;
+    private ViewGroup                 mDrawerListContainer;
     private ListView                  mDrawerListView;
     private View                      mFragmentContainerView;
 
@@ -103,11 +105,14 @@ public class NavigationDrawerFragment
         LayoutInflater inflater,
         ViewGroup container,
         Bundle savedInstanceState) {
-        mDrawerListView =
-            (ListView)inflater.inflate(
+        mDrawerListContainer =
+            (ViewGroup)inflater.inflate(
                 R.layout.fragment_navigation_drawer,
                 container,
                 false);
+        mDrawerListView =
+            (ListView)mDrawerListContainer
+                .findViewById(R.id.drawer_list);
         mDrawerListView
             .setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -128,7 +133,7 @@ public class NavigationDrawerFragment
                 getString(R.string.title_section3), }));
         mDrawerListView
             .setItemChecked(mCurrentSelectedPosition, true);
-        return mDrawerListView;
+        return mDrawerListContainer;
     }
 
     public boolean isDrawerOpen() {
@@ -279,32 +284,11 @@ public class NavigationDrawerFragment
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // If the drawer is open, show the global app actions in the action bar.
-        // See also
-        // showGlobalContextActionBar, which controls the top-left area of the
-        // action bar.
-        if (mDrawerLayout != null && isDrawerOpen()) {
-            inflater.inflate(R.menu.global, menu);
-            showGlobalContextActionBar();
-        }
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Open drawer if action bar title is tapped
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-
-        if (item.getItemId() == R.id.action_example) {
-            Toast.makeText(
-                getActivity(),
-                "Example action.",
-                Toast.LENGTH_SHORT).show();
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 

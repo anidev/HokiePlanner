@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">HokiePlanner</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
+    <string name="app_name">Hokie Planner</string>
+    <string name="title_section1">Checksheet</string>
+    <string name="title_section2">Course Sequence</string>
+    <string name="title_section3">HokieSpa</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
+    <string name="login_label_text">Login to HokieSpa</string>
+    <string name="login_pid_hint">PID</string>
+    <string name="login_pass_hint">Password</string>
+    <string name="login_submit_text">Login</string>
+    <string name="login_skip_text">Skip</string>
+    <string name="title_activity_login">HokieSpa Login</string>
 
 </resources>
