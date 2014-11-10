@@ -28,6 +28,9 @@ public class Prefs {
     }
 
     public static void setUserPID(String pid) {
-        prefs.edit().putString("pid", pid.trim()).apply();
+        if (pid != null) {
+            pid = pid.trim();
+        }
+        prefs.edit().putString("pid", pid).apply();
     }
 }
