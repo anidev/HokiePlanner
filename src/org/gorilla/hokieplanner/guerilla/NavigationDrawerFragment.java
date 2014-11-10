@@ -60,6 +60,7 @@ public class NavigationDrawerFragment
     private DrawerLayout              mDrawerLayout;
     private ViewGroup                 mDrawerListContainer;
     private ListView                  mDrawerListView;
+    private ListView                  mAccountListView;
     private View                      mFragmentContainerView;
 
     private int                       mCurrentSelectedPosition = 0;
@@ -110,6 +111,8 @@ public class NavigationDrawerFragment
                 R.layout.fragment_navigation_drawer,
                 container,
                 false);
+
+        // Setup the navigation list entries
         mDrawerListView =
             (ListView)mDrawerListContainer
                 .findViewById(R.id.drawer_list);
@@ -133,6 +136,33 @@ public class NavigationDrawerFragment
                 getString(R.string.title_section3), }));
         mDrawerListView
             .setItemChecked(mCurrentSelectedPosition, true);
+
+        // Setup the pid display and login/logout action
+        mAccountListView =
+            (ListView)mDrawerListContainer
+                .findViewById(R.id.drawer_account);
+        mAccountListView
+            .setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(
+                    AdapterView<?> parent,
+                    View view,
+                    int position,
+                    long id) {
+                    if (position == 1) {
+                        // TODO Do login or logout here
+                    }
+                }
+            });
+        int actionText =
+            (Prefs.getUserPID() != null ? R.string.logout_text
+                : R.string.login_text);
+        mAccountListView.setAdapter(new ArrayAdapter<String>(
+            getActionBar().getThemedContext(),
+            R.layout.list_item_small,
+            new String[] { (Prefs.getUserPID() + "@vt.edu").toUpperCase(),
+                getString(actionText).toUpperCase() }));
+
         return mDrawerListContainer;
     }
 

@@ -1,15 +1,27 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_container"
+    android:background="@drawable/hokie_primary"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:gravity="start" >
 
     <ListView
         android:id="@+id/drawer_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/hokie_primary"
         android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        tools:context="org.gorilla.hokieplanner.guerilla.NavigationDrawerFragment" />
+
+    <ListView
+        android:id="@+id/drawer_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:choiceMode="none"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
         tools:context="org.gorilla.hokieplanner.guerilla.NavigationDrawerFragment" />
