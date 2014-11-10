@@ -20,13 +20,14 @@ public class Prefs {
     }
 
     public static String getUserPID() {
-        return prefs.getString("pid", null);
+        String pid = prefs.getString("pid", null);
+        if (pid != null && pid.equals("")) {
+            pid = null;
+        }
+        return pid;
     }
 
     public static void setUserPID(String pid) {
-        if (pid == null) {
-            pid = "";
-        }
         prefs.edit().putString("pid", pid.trim()).apply();
     }
 }
