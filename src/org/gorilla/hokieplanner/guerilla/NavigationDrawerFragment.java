@@ -162,12 +162,14 @@ public class NavigationDrawerFragment
         int actionText =
             (Prefs.getUserPID() != null ? R.string.logout_text
                 : R.string.login_text);
+        String pidText =
+            (Prefs.getUserPID() != null ? Prefs.getUserPID()
+                + "@vt.edu" : "Not logged in");
         mAccountListView.setAdapter(new ArrayAdapter<String>(
             getActionBar().getThemedContext(),
             R.layout.list_item_small,
             new String[] {
-                (Prefs.getUserPID() + "@vt.edu").toUpperCase(Locale
-                    .getDefault()),
+                (pidText).toUpperCase(Locale.getDefault()),
                 getString(actionText)
                     .toUpperCase(Locale.getDefault()) }));
 
@@ -233,6 +235,7 @@ public class NavigationDrawerFragment
                     return;
                 }
 
+                mCallbacks.restoreActionBar();
                 getActivity().supportInvalidateOptionsMenu(); // calls
                                                               // onPrepareOptionsMenu()
             }
@@ -372,5 +375,11 @@ public class NavigationDrawerFragment
          * drawer is selected.
          */
         void resetLogin();
+
+        /**
+         * Called to restore the action bar to normal after closing the
+         * navigation drawer, if it was changed.
+         */
+        void restoreActionBar();
     }
 }

@@ -77,7 +77,6 @@ public class PlannerActivity
                 R.id.main_container,
                 PlaceholderFragment.newInstance(position + 1))
             .commit();
-        restoreActionBar();
     }
 
     /**
@@ -112,12 +111,14 @@ public class PlannerActivity
                 title = getString(R.string.title_section3);
                 break;
         }
+        restoreActionBar();
     }
 
     /**
      * Called to restore the action bar to normal after closing the navigation
      * drawer, if it was changed
      */
+    @Override
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar

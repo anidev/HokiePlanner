@@ -45,13 +45,30 @@ public class LoginActivity
 
         // Assume login succeeded
         Prefs.setUserPID(pid);
-        Intent intent = new Intent(this, PlannerActivity.class);
-        startActivity(intent);
+        startPlannerActivity();
+    }
+
+    /**
+     * Called by the skip button in the layout, this method is specified in the
+     * XML file for the layout
+     *
+     * @param button
+     *            The button that was clicked to call this method
+     */
+    public void loginSkip(View button) {
+        // TODO Dialog to ask if the user really wants to do this
+        Prefs.setUserPID(null);
+        startPlannerActivity();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         finish();
+    }
+
+    private void startPlannerActivity() {
+        Intent intent = new Intent(this, PlannerActivity.class);
+        startActivity(intent);
     }
 }
