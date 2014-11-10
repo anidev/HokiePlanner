@@ -1,5 +1,6 @@
 package org.gorilla.hokieplanner.guerilla;
 
+import android.content.Intent;
 import android.view.Gravity;
 import org.gorilla.hokieplanner.guerilla.R;
 import android.annotation.TargetApi;
@@ -67,6 +68,14 @@ public class PlannerActivity
                 R.id.main_container,
                 PlaceholderFragment.newInstance(position + 1))
             .commit();
+    }
+
+    @Override
+    public void resetLogin() {
+        Prefs.setUserPID(null);
+        Intent intent=new Intent(this,LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     public void onSectionAttached(int number) {

@@ -150,7 +150,7 @@ public class NavigationDrawerFragment
                     int position,
                     long id) {
                     if (position == 1) {
-                        // TODO Do login or logout here
+                        mCallbacks.resetLogin();
                     }
                 }
             });
@@ -349,5 +349,11 @@ public class NavigationDrawerFragment
          * Called when an item in the navigation drawer is selected.
          */
         void onNavigationDrawerItemSelected(int position);
+
+        /**
+         * Called when the login/logout button at the bottom of the navigation
+         * drawer is selected.
+         */
+        void resetLogin();
     }
 }
