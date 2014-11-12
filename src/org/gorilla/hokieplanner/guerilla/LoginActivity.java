@@ -9,9 +9,9 @@ import android.os.Bundle;
 /**
  * Activity for logging into HokieSpa
  *
- * @author Anirudh Bagde
- * @author Weyland Chiang
- * @author Sayan Ekambarapu
+ * @author Anirudh Bagde (anibagde)
+ * @author Weyland Chiang (chiangw)
+ * @author Sayan Ekambarapu (sayan96)
  * @version Nov 9, 2014
  */
 public class LoginActivity

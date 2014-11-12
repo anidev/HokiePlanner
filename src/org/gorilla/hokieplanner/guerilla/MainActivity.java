@@ -8,9 +8,9 @@ import android.support.v7.app.ActionBarActivity;
  * First activity that runs and decides whether to go straight to the planner
  * activity or first ask to login
  *
- * @author Anirudh Bagde
- * @author Weyland Chiang
- * @author Sayan Ekambarapu
+ * @author Anirudh Bagde (anibagde)
+ * @author Weyland Chiang (chiangw)
+ * @author Sayan Ekambarapu (sayan96)
  * @version Nov 9, 2014
  */
 public class MainActivity

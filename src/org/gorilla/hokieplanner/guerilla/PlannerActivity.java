@@ -20,9 +20,9 @@ import android.support.v4.widget.DrawerLayout;
  * Activity representing the main screen with navigation drawerLayout and the
  * various fragments for the app
  *
- * @author Anirudh Bagde
- * @author Weyland Chiang
- * @author Sayan Ekambarapu
+ * @author Anirudh Bagde (anibagde)
+ * @author Weyland Chiang (chiangw)
+ * @author Sayan Ekambarapu (sayan96)
  * @version Nov 9, 2014
  */
 public class PlannerActivity
