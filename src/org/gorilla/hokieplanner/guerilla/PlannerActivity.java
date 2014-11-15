@@ -1,5 +1,6 @@
 package org.gorilla.hokieplanner.guerilla;
 
+import android.util.Log;
 import android.content.Intent;
 import android.view.Gravity;
 import org.gorilla.hokieplanner.guerilla.R;
@@ -46,6 +47,8 @@ public class PlannerActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Prefs.initialize(this);
+
         setContentView(R.layout.activity_planner);
 
         navigationDrawerFragment =
@@ -86,7 +89,6 @@ public class PlannerActivity
      */
     @Override
     public void resetLogin() {
-        Prefs.setUserPID(null);
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();

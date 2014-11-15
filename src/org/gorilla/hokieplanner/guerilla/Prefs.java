@@ -47,10 +47,29 @@ public class Prefs {
      *            PID string, or null to unset it
      */
     public static void setUserPID(String pid) {
-        String finalPid=pid;
+        String finalPid = pid;
         if (finalPid != null) {
             finalPid = finalPid.trim();
         }
         prefs.edit().putString("pid", finalPid).apply();
+    }
+
+    /**
+     * Get whether the app is remembering the user's PID, true by default
+     *
+     * @return Whether remembering PID
+     */
+    public static boolean isRememberingPID() {
+        return prefs.getBoolean("pidremember", true);
+    }
+
+    /**
+     * Set whether the app should remember the user's PID
+     *
+     * @param remembering
+     *            Whether remembering PID
+     */
+    public static void setRememberingPID(boolean remembering) {
+        prefs.edit().putBoolean("pidremember", remembering).commit();
     }
 }

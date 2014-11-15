@@ -159,12 +159,14 @@ public class NavigationDrawerFragment
                     }
                 }
             });
+        Bundle extras = getActivity().getIntent().getExtras();
+        String pid =
+            (extras != null ? extras.getString("pid") : null);
         int actionText =
-            (Prefs.getUserPID() != null ? R.string.logout_text
-                : R.string.login_text);
+            (pid != null ? R.string.logout_text : R.string.login_text);
         String pidText =
-            (Prefs.getUserPID() != null ? Prefs.getUserPID()
-                + "@vt.edu" : "Not logged in");
+            (pid != null ? pid + "@vt.edu"
+                : "Not logged in");
         mAccountListView.setAdapter(new ArrayAdapter<String>(
             getActionBar().getThemedContext(),
             R.layout.list_item_small,

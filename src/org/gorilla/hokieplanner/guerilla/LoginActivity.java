@@ -1,5 +1,6 @@
 package org.gorilla.hokieplanner.guerilla;
 
+import android.widget.CheckBox;
 import android.content.Intent;
 import android.widget.EditText;
 import android.view.View;
@@ -23,6 +24,15 @@ public class LoginActivity
         setContentView(R.layout.activity_login);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getRememberBox().setChecked(Prefs.isRememberingPID());
+        if (Prefs.isRememberingPID()) {
+            getPIDField().setText(Prefs.getUserPID());
+        }
+    }
+
     /**
      * Called by the login button in the layout, this method is specified in the
      * XML file for the layout
@@ -31,9 +41,7 @@ public class LoginActivity
      *            The button that was clicked to call this method
      */
     public void loginSubmit(View button) {
-        String pid =
-            ((EditText)findViewById(R.id.login_pid_field)).getText()
-                .toString();
+        String pid = getAndSavePID();
         String password =
             ((EditText)findViewById(R.id.login_pass_field)).getText()
                 .toString();
@@ -44,21 +52,19 @@ public class LoginActivity
         }
 
         // Assume login succeeded
-        Prefs.setUserPID(pid);
-        startPlannerActivity();
+        startPlannerActivity(pid);
     }
 
     /**
-     * Called by the skip button in the layout, this method is specified in the
-     * XML file for the layout
+     * Called by the cancel button in the layout, this method is specified in
+     * the XML file for the layout
      *
      * @param button
      *            The button that was clicked to call this method
      */
-    public void loginSkip(View button) {
-        // TODO Dialog to ask if the user really wants to do this
-        Prefs.setUserPID(null);
-        startPlannerActivity();
+    public void loginCancel(View button) {
+        getAndSavePID();
+        startPlannerActivity(null);
     }
 
     @Override
@@ -67,8 +73,24 @@ public class LoginActivity
         finish();
     }
 
-    private void startPlannerActivity() {
+    private String getAndSavePID() {
+        String pid = getPIDField().getText().toString();
+        Prefs.setRememberingPID(getRememberBox().isChecked());
+        Prefs.setUserPID((getRememberBox().isChecked() ? pid : null));
+        return pid;
+    }
+
+    private void startPlannerActivity(String pid) {
         Intent intent = new Intent(this, PlannerActivity.class);
+        intent.putExtra("pid", pid);
         startActivity(intent);
+    }
+
+    private CheckBox getRememberBox() {
+        return (CheckBox)findViewById(R.id.login_remember_box);
+    }
+
+    private EditText getPIDField() {
+        return (EditText)findViewById(R.id.login_pid_field);
     }
 }

@@ -12,9 +12,11 @@
     <string name="login_pid_hint">PID</string>
     <string name="login_pass_hint">Password</string>
     <string name="login_submit_text">Login</string>
-    <string name="login_skip_text">Skip</string>
+    <string name="login_cancel_text">Cancel</string>
     <string name="title_activity_login">HokieSpa Login</string>
     <string name="login_text">Login</string>
     <string name="logout_text">Logout</string>
+    <string name="login_remember_text">Remember username</string>
+    <string name="login_warning_text">Warning: Logging in is done through CAS, which will expire after a day</string>
 
 </resources>
