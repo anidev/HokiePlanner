@@ -184,11 +184,17 @@ public class PlannerActivity
             LayoutInflater inflater,
             ViewGroup container,
             Bundle savedInstanceState) {
+            int layoutId = R.layout.fragment_checksheet;
+            switch (getArguments().getInt(ARG_SECTION_NUMBER)) {
+                case 2:
+                    layoutId = R.layout.fragment_diagram;
+                    break;
+                case 3:
+                    layoutId = R.layout.fragment_timetable;
+                    break;
+            }
             View rootView =
-                inflater.inflate(
-                    R.layout.fragment_main,
-                    container,
-                    false);
+                inflater.inflate(layoutId, container, false);
             return rootView;
         }
 

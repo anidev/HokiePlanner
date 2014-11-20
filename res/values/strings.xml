@@ -18,5 +18,6 @@
     <string name="logout_text">Logout</string>
     <string name="login_remember_text">Remember username</string>
     <string name="login_warning_text">Warning: Logging in is done through CAS, which will expire after a day</string>
+    <string name="group_title_text">Group Title</string>
 
 </resources>
