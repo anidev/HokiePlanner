@@ -24,7 +24,7 @@ import javax.security.auth.login.LoginException;
 
 /**
  * Authentication Framework used to interface with the
- * Virginia Tech Central Authentication System. Inspired by
+ * Virginia Tech Central Authentication System. Based on
  * Ethan Gaebel's VTAccess (github.com/egaebel)
  *
  * @author Anirudh Bagde (anibagde)
