@@ -72,4 +72,30 @@ public class Prefs {
     public static void setRememberingPID(boolean remembering) {
         prefs.edit().putBoolean("pidremember", remembering).commit();
     }
+
+    /**
+     * Get the user-selected checksheet
+     *
+     * @return Name of the AvailableChecksheets enum corresponding to the one
+     *         the user selected, or null if the user has not yet selected
+     *         anything
+     */
+    public static String getSelectedChecksheet() {
+        String checksheet = prefs.getString("checksheet", null);
+        if (checksheet != null && checksheet.equals("")) {
+            checksheet = null;
+        }
+        return checksheet;
+    }
+
+    /**
+     * Set the user-selected checksheet, or null to reset it
+     *
+     * @param checksheet
+     *            This should be the name of the AvailableChecksheets enum that
+     *            corresponds to the selected checksheet
+     */
+    public static void setSelectedChecksheet(String checksheet) {
+        prefs.edit().putString("checksheet", checksheet).commit();
+    }
 }

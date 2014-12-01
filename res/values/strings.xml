@@ -2,9 +2,10 @@
 <resources>
 
     <string name="app_name">Hokie Planner</string>
-    <string name="title_section1">Checksheet</string>
-    <string name="title_section2">Course Diagram</string>
-    <string name="title_section3">HokieSpa</string>
+    <string name="title_section1">Home</string>
+    <string name="title_section2">Checksheet</string>
+    <string name="title_section3">Course Diagram</string>
+    <string name="title_section4">Timetable</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Settings</string>
@@ -19,5 +20,12 @@
     <string name="login_remember_text">Remember username</string>
     <string name="login_warning_text">Warning: Logging in is done through CAS, which will expire after a day</string>
     <string name="group_title_text">Group Title</string>
+    <string name="welcome_string">Welcome</string>
+    <string name="selected_major_text">Selected Major:</string>
+    <string name="zero_credits_text">Total Credits: 0</string>
+    <string name="selected_year_text">Selected Year:</string>
+    <string name="change_major_text">Change Major</string>
+    <string name="title_activity_major_picker">Select Major and Year</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

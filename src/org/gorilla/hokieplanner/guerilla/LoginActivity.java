@@ -67,12 +67,6 @@ public class LoginActivity
         startPlannerActivity(null);
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        finish();
-    }
-
     private String getAndSavePID() {
         String pid = getPIDField().getText().toString();
         Prefs.setRememberingPID(getRememberBox().isChecked());
@@ -84,6 +78,7 @@ public class LoginActivity
         Intent intent = new Intent(this, PlannerActivity.class);
         intent.putExtra("pid", pid);
         startActivity(intent);
+        finish();
     }
 
     private CheckBox getRememberBox() {
