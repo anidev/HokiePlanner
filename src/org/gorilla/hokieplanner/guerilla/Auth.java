@@ -34,71 +34,92 @@ import javax.security.auth.login.LoginException;
  */
 public class Auth
 {
-
-    //~Constants-----------------------------------------------
+    // --------------------------------------------------------
     /**
      * User-Agents
      */
     private static final String AGENTS = "Mozilla/5.0 (Windows NT 6.1; WOW64)" +
     		" AppleWebKit/537.36 (KHTML, like Gecko)" +
     		" Chrome/38.0.2125.122 Safari/537.36";
+
+    // --------------------------------------------------------
     /**
      * HokieSpa Login URL
      */
     private static final String LOGIN = "https://auth.vt.edu/login?service=" +
     		"https://webapps.banner.vt.edu/banner-cas-prod/" +
     		"authorized/banner/SelfService";
+
+    // --------------------------------------------------------
     /**
      * HokieSpa Logout URL
      */
     private static final String CAS_LOGOUT = "https://auth.vt.edu/logout";
+
+    // --------------------------------------------------------
     /**
      * Check for Recovery Options
      */
-    private static final String RECOVERY_OPTIONS_STRING = "You have not updated" +
+    private static final String RECOVERY_OPTIONS_STRING = "" +
+    		"You have not updated" +
     		" account recovery options in the past";
+
+    // --------------------------------------------------------
     /**
      * HokieSpa Recovery URL
      */
     private static final String RECOVERY_OPTIONS_LOGIN = "https://banweb." +
     		"banner.vt.edu/ssb/prod/twbkwbis.P_GenMenu?name=bmenu.P_MainMnu";
 
-    //~Data Fields---------------------------------------------
+    // --------------------------------------------------------
     /**
      * Map of the strings used by HokieSpa
      */
     private Map<String, String> cookies;
+
+    // --------------------------------------------------------
     /**
      * CAS SSL cert
      */
     private File cert;
+
+    // --------------------------------------------------------
     /**
      * Location to save SSL cert
      */
     private String certFilePath;
+
+    // --------------------------------------------------------
     /**
      * Whether or not there is an active connection
      */
     private boolean active;
+
+    // --------------------------------------------------------
     /**
      * The stored username of the user of this session.
      */
     private char[] username;
+
+    // --------------------------------------------------------
     /**
      * The stored password of the user of this session.
      */
     private char[] password;
+
+    // --------------------------------------------------------
     /**
      * Checks user/pass and determines whether or not they are valid
      */
     private boolean validLoginInfo;
+
+    // --------------------------------------------------------
     /**
      * Whether or not a refresh is needed for this session
      */
     private boolean refreshSession;
 
     //~Constructors--------------------------------------------
-
     /**
      * Constructor taking a username and password to be used with CAS.
      * Logs into CAS immediately.
@@ -147,6 +168,7 @@ public class Auth
         }
     }
 
+    // --------------------------------------------------------
     /**
      * Constructor taking a username and password to be used with HokieSpa
      * session management; and a filePath to save the SSL certificate to.
@@ -209,7 +231,8 @@ public class Auth
      * @param password the password of the user.
      * @return True if successful, false if IOException or bad Certificate
      *
-     * @throws LoginException indicates that the username or password was incorrect.
+     * @throws LoginException indicates that the username
+     * or password was incorrect.
      */
     private boolean login(char[] username, char[] password)
         throws LoginException {
@@ -218,7 +241,8 @@ public class Auth
 
             if(grabCertificate()) {
 
-                System.setProperty("javax.net.ssl.trustStore", cert.getAbsolutePath());
+                System.setProperty("javax.net.ssl.trustStore",
+                    cert.getAbsolutePath());
 
                 return loginHelper(username, password);
             }
@@ -233,6 +257,7 @@ public class Auth
         return false;
     }
 
+    // --------------------------------------------------------
     /**
      * Refreshes a timed out session
      *
@@ -260,15 +285,19 @@ public class Auth
         return false;
     }
 
+    // --------------------------------------------------------
     /**
-     * Switches the user that is active on this session to the passed in username and password.
+     * Switches the user that is active on this session to the passed
+     * in username and password.
      *
      * @param username the new username to use.
      * @param password the new password to use.
      *
-     * @throws LoginException indicates that the username or password was incorrect.
+     * @throws LoginException indicates that the username
+     * or password was incorrect.
      */
-    public void switchUsers(char[] username, char[] password) throws LoginException {
+    public void switchUsers(char[] username, char[] password)
+        throws LoginException {
 
         logout();
         clearUserData();
@@ -302,17 +331,21 @@ public class Auth
         }
     }
 
+    // --------------------------------------------------------
     /**
-     * Switches the user that is active on this session to the passed in username and password.
+     * Switches the user that is active on this session to the passed in
+     * username and password.
      * Logs in with new user immediately.
      *
      * @param username the new username to use.
      * @param password the new password to use.
      * @param filePath a new filePath to use for the SSL certificate.
      *
-     * @throws LoginException indicates that the username or password was incorrect.
+     * @throws LoginException indicates that the username
+     * or password was incorrect.
      */
-    public void switchUsers(char[] username, char[] password, String filePath) throws LoginException {
+    public void switchUsers(char[] username, char[] password, String filePath)
+        throws LoginException {
 
         closeSession();
         this.username = new char[username.length];
@@ -346,11 +379,12 @@ public class Auth
         }
     }
 
-
+    // --------------------------------------------------------
     /**
      * Closes down this Cas session.
      *
-     * @return true if the session closed successfully, false if it did not close.
+     * @return true if the session closed successfully,
+     * false if it did not close.
      */
     public boolean closeSession() {
 
@@ -358,6 +392,7 @@ public class Auth
         return logout();
     }
 
+    // --------------------------------------------------------
     /**
      * Grabs the needed SSL Certificate from the CAS login page.
      *
@@ -370,7 +405,8 @@ public class Auth
 
         try {
             URL url = new URL(LOGIN);
-            HttpsURLConnection connect = (HttpsURLConnection)url.openConnection();
+            HttpsURLConnection connect =
+                (HttpsURLConnection)url.openConnection();
             connect.connect();
             Certificate[] certs = connect.getServerCertificates();
 
@@ -401,9 +437,10 @@ public class Auth
         return false;
     }
 
+    // --------------------------------------------------------
     /**
-     * Grabs the needed SSL Certificate from the CAS login page. Saves the file to the passed in
-     * directory.
+     * Grabs the needed SSL Certificate from the CAS login page.
+     * Saves the file to the passed in directory.
      *
      * @return true if successful, false if there was an IOException,
      *          MalformedURLException, SSLPeerUnverifiedException,
@@ -414,7 +451,8 @@ public class Auth
 
         try {
             URL url = new URL(LOGIN);
-            HttpsURLConnection connect = (HttpsURLConnection)url.openConnection();
+            HttpsURLConnection connect =
+                (HttpsURLConnection)url.openConnection();
             connect.connect();
             Certificate[] certs = connect.getServerCertificates();
 
@@ -445,30 +483,36 @@ public class Auth
         return false;
     }
 
-
+    // --------------------------------------------------------
     /**
      * Takes in a username and password and logs into CAS
-     * with the supplied username and password. Also takes in a String that specifies
-     * the directory where the SSL should be saved. This is especially useful in Android
-     * usage, because the file system differs from java's default one.
+     * with the supplied username and password. Also takes in a String that
+     * specifies the directory where the SSL should be saved. This is
+     * especially useful in Android usage, because the file system differs
+     * from java's default one.
      *
-     * For best performance this method call should be done in a separate thread.
+     * For best performance this method call should be done
+     * in a separate thread.
      *
      * @param username the username of the user.
      * @param password the password of the user.
-     * @param filePath the file path that the SSL certificate should be saved in.
+     * @param filePath the file path that the SSL certificate should be
+     * saved in.
      * @return returns true if successful, false if there was an IOException,
      *          and false if the Certificate wasn't correctly obtained.
      *
-     * @throws LoginException indicates that the username or password was incorrect
+     * @throws LoginException indicates that the username
+     *  or password was incorrect
      */
-    private boolean login(char[] username, char[] password, String filePath) throws LoginException {
+    private boolean login(char[] username, char[] password, String filePath)
+        throws LoginException {
 
         try {
 
             if(grabCertificate(filePath)) {
 
-                System.setProperty("javax.net.ssl.trustStore", cert.getAbsolutePath());
+                System.setProperty("javax.net.ssl.trustStore",
+                    cert.getAbsolutePath());
 
                 return loginHelper(username, password);
             }
@@ -484,7 +528,8 @@ public class Auth
         return false;
     }
 
-    private boolean loginHelper(char[] username, char[] password) throws IOException, LoginException {
+    private boolean loginHelper(char[] username, char[] password)
+        throws IOException, LoginException {
 
         // get three hidden fields, and cookies from initial Login Page
         Response loginPageResp = Jsoup.connect(LOGIN).execute();
@@ -567,10 +612,12 @@ public class Auth
         return true;
     }
 
+    // --------------------------------------------------------
     /**
      * End this CAS session. If this returns false the session stays open.
      *
-     * @return true if successful, false if an error occurred (the session will remain open).
+     * @return true if successful, false if an error occurred
+     * (the session will remain open).
      */
     private boolean logout() {
 
@@ -593,6 +640,7 @@ public class Auth
         return val;
     }
 
+    // --------------------------------------------------------
     /**
      * Erases user data stored in this class.
      */
@@ -606,11 +654,12 @@ public class Auth
         }
     }
 
-    //~Getters and Setters--------------------------------------------------------------
+    // --------------------------------------------------------
     /**
-     * Getter for cookies.
+     * Getter method for cookies.
      *
-     * @return cookies the cookies that have been pulled from Cas, if a login has occurred. Otherwise, returns null
+     * @return cookies the cookies that have been pulled from Cas,
+     * if a login has occurred. Otherwise, returns null
      */
     protected Map<String, String> getCookies() {
 
@@ -618,6 +667,7 @@ public class Auth
         return cookies;
     }
 
+    // --------------------------------------------------------
     /**
      * Tests to see if this CAS object has an active
      * login session with hokiespa.
@@ -634,8 +684,10 @@ public class Auth
         return active;
     }
 
+    // --------------------------------------------------------
     /**
-     * Indicates whether the login information stored in this Cas object is valid.
+     * Indicates whether the login information stored in this CAS
+     * object is valid.
      * Validity is determined when attempting to log into hokiespa.
      *
      * @return true if login information is valid, false otherwise.
@@ -645,6 +697,7 @@ public class Auth
         return validLoginInfo;
     }
 
+    // --------------------------------------------------------
     /**
      * @return the refreshSession
      */
@@ -653,6 +706,7 @@ public class Auth
         return refreshSession;
     }
 
+    // --------------------------------------------------------
     /**
      * @param refreshSession the refreshSession to set
      */
