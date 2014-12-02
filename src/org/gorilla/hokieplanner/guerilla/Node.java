@@ -3,8 +3,9 @@ package org.gorilla.hokieplanner.guerilla;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+
 /**
- *  Tree structure that can import an XML file and create a tree from it
+ * Tree structure that can import an XML file and create a tree from it
  *
  * @author Anirudh Bagde (anibagde)
  * @author Weyland Chiang (chiangw)
@@ -16,24 +17,27 @@ public class Node<E>
     /**
      * Data to be contained in node
      */
-    private E data;
+    private E               data;
 
     /**
      * ArrayList of children Nodes
      */
-    private ArrayList<Node> children;
+    private ArrayList<Node<E>> children;
+
 
     // ----------------------------------------------------------
     /**
      * Creates a node with the specified data
      *
-     * @param data Data the node contains
+     * @param data
+     *            Data the node contains
      */
     public Node(E data)
     {
         this.data = data;
-        this.children = new ArrayList<Node>();
+        this.children = new ArrayList<Node<E>>();
     }
+
 
     // ----------------------------------------------------------
     /**
@@ -46,23 +50,25 @@ public class Node<E>
         return data;
     }
 
+
     // ----------------------------------------------------------
     /**
      * Getter Method for the ArrayList of Children
      *
      * @return ArrayList of Nodes that are the children of the current node
      */
-    public ArrayList<Node> getChildren()
+    public ArrayList<Node<E>> getChildren()
     {
         return children;
     }
+
 
     // ----------------------------------------------------------
     /**
      * Putter Method to add a child Node to the current node
      *
-     * @param data Data to be stored in the node
-     *
+     * @param data
+     *            Data to be stored in the node
      * @return Node stored in the ArrayList
      */
     public Node<E> addChild(E data)

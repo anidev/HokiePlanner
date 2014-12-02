@@ -6,5 +6,6 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/Sofia-Support"/>
+	<classpathentry kind="lib" path="/Users/lt-wchiang/Desktop/VTAccess.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

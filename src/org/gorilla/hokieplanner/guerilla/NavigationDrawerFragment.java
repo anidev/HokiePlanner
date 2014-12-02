@@ -123,7 +123,6 @@ public class NavigationDrawerFragment
                 .findViewById(R.id.drawer_list);
         mDrawerListView
             .setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
                 public void onItemClick(
                     AdapterView<?> parent,
                     View view,
@@ -149,7 +148,6 @@ public class NavigationDrawerFragment
                 .findViewById(R.id.drawer_account);
         mAccountListView
             .setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
                 public void onItemClick(
                     AdapterView<?> parent,
                     View view,
@@ -278,7 +276,6 @@ public class NavigationDrawerFragment
 
         // Defer code dependent on restoration of previous instance state.
         mDrawerLayout.post(new Runnable() {
-            @Override
             public void run() {
                 mDrawerToggle.syncState();
             }

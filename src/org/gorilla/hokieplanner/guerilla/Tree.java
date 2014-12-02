@@ -148,7 +148,7 @@ public class Tree<E>
         private void genList(HashMap<E, Node<E>> tree, E data)
         {
             list.add(tree.get(data));
-            ArrayList<Node> children = tree.get(data).getChildren();
+            ArrayList<Node<E>> children = tree.get(data).getChildren();
 
         }
 
@@ -169,7 +169,6 @@ public class Tree<E>
          *
          * @return Node Next node in the iterator
          */
-        @Override
         public Node<E> next()
         {
             return list.poll();

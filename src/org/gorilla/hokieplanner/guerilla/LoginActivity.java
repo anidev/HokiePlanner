@@ -1,6 +1,7 @@
 package org.gorilla.hokieplanner.guerilla;
 
-import javax.security.auth.login.LoginException;
+import com.vtaccess.exceptions.WrongLoginException;
+import com.vtaccess.Cas;
 import android.widget.CheckBox;
 import android.content.Intent;
 import android.widget.EditText;
@@ -30,7 +31,7 @@ public class LoginActivity
     /**
      * Initialize the Auth object login
      */
-    private Auth     login;
+    private Cas     login;
 
     // --------------------------------------------------------
     /**
@@ -79,9 +80,9 @@ public class LoginActivity
         }
         else {
             try {
-                login = new Auth(pid, password);
+                login = new Cas(pid, password);
             }
-            catch (LoginException e) {
+            catch (WrongLoginException e) {
                 login = null;
             }
         }
