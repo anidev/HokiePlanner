@@ -4,8 +4,9 @@ import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+
 /**
- *  Tree structure that can import an XML file and create a tree from it
+ * Tree structure that can import an XML file and create a tree from it
  *
  * @author Anirudh Bagde (anibagde)
  * @author Weyland Chiang (chiangw)
@@ -24,7 +25,8 @@ public class Tree<E>
     /**
      * Holds the first item put into the hashmap
      */
-    private E first;
+    private E                   first;
+
 
     // ----------------------------------------------------------
     /**
@@ -35,6 +37,7 @@ public class Tree<E>
         this.nodes = new HashMap<E, Node<E>>();
         this.first = null;
     }
+
 
     // ----------------------------------------------------------
     /**
@@ -47,12 +50,13 @@ public class Tree<E>
         return nodes;
     }
 
+
     // ----------------------------------------------------------
     /**
      * Adds a node to the tree that does not have a parent
      *
-     * @param data Data value of the node
-     *
+     * @param data
+     *            Data value of the node
      * @return Node added to the tree
      */
     public Node<E> addNode(E data)
@@ -63,13 +67,16 @@ public class Tree<E>
         }
         return this.addNode(data, null);
     }
+
+
     // ----------------------------------------------------------
     /**
      * Adds a node to the tree with a given parent
      *
-     * @param data Data of the node to add to the tree
-     * @param parent Parent of the node you are adding
-     *
+     * @param data
+     *            Data of the node to add to the tree
+     * @param parent
+     *            Parent of the node you are adding
      * @return Node just added to the tree
      */
     public Node<E> addNode(E data, E parent)
@@ -95,58 +102,48 @@ public class Tree<E>
 
     // ----------------------------------------------------------
     /**
-     * Public method to return an iterator
-     * This is a Breadth-First Tree Iterator
+     * Public method to return an iterator This is a Breadth-First Tree Iterator
      *
      * @return Node Iterator for the tree
      */
     public Iterator<Node<E>> iterator()
     {
-        //return TreeIterator(nodes, first);
+        //return TreeIterator.iterator();
         return null;
     }
 
+
     // -------------------------------------------------------------------------
     /**
-     *  Tree Iterator to make it easy to iterate through things
-     *  This is a breadth-first iterator
+     * Tree Iterator to make it easy to iterate through things This is a
+     * breadth-first iterator
      *
      * @author Anirudh Bagde (anibagde)
      * @author Weyland Chiang (chiangw)
      * @author Sayan Ekambarapu (sayan96)
      * @version December 1, 2014
+     * @param <E> Generic Data Type
      */
-    public class TreeIterator implements Iterator<Node<E>>
+    public class TreeIterator<E> implements Iterator<Node<E>>
     {
-        /**
-         * LinkedList of Nodes
-         */
         private LinkedList<Node<E>> list;
 
-        /**
-         * Hashmap to iterate through stuffs
-         */
-        private HashMap<E, ArrayList<Node<E>>> layers;
 
+        // ----------------------------------------------------------
         /**
-         * Creates the tree iterator that has a Linked List
-         * This list is recursively generated.
+         * Create a new TreeIterator object.
          *
          * @param tree Tree to make an iterator for
          * @param data First data entry to use
          */
-        /*
-        private Iterator<Node<E>> TreeIterator(
-            HashMap<E, Node<E>> tree, E data)
+        public TreeIterator(HashMap<E, Node<E>> tree, E data)
         {
             list = new LinkedList<Node<E>>();
-
             if (tree.containsKey(data))
             {
                 this.genList(tree, data);
             }
         }
-        */
 
         // ----------------------------------------------------------
         /**
@@ -155,20 +152,72 @@ public class Tree<E>
         private void genList(HashMap<E, Node<E>> tree, E data)
         {
             list.add(tree.get(data));
-            ArrayList<Node> children = tree.get(data).getChildren();
+            ArrayList<Node<E>> children = tree.get(data).getChildren();
+            for (int i = 0; i < children.size(); i++)
+            {
+                this.genList(tree, children.get(i).getData());
+            }
+        }
 
+        // ----------------------------------------------------------
+        /**
+         * Methods for the iterator class
+         *
+         * @return Iterator<Node<E>> Iterator type
+         */
+        public Iterator<Node<E>> iterator()
+        {
+            Iterator<Node<E>> iter = new Iterator<Node<E>>() {
+                // ----------------------------------------------------------
+                /**
+                 * Returns whether or not there is another item
+                 *
+                 * @return Boolean representing the presence of another iterable
+                 *         item
+                 */
+                public boolean hasNext()
+                {
+                    return !(list.isEmpty());
+                }
+
+
+                // ----------------------------------------------------------
+                /**
+                 * Returns the next node in the list
+                 *
+                 * @return Node Next node in the iterator
+                 */
+                public Node<E> next()
+                {
+                    return list.poll();
+                }
+
+
+                // ----------------------------------------------------------
+                /**
+                 * Left out functionality
+                 */
+                public void remove()
+                {
+                    // Intentionally left blank
+                }
+
+            };
+            return iter;
         }
 
         // ----------------------------------------------------------
         /**
          * Returns whether or not there is another item
          *
-         * @return Boolean representing the presence of another iterable item
+         * @return Boolean representing the presence of another iterable
+         *         item
          */
         public boolean hasNext()
         {
             return !(list.isEmpty());
         }
+
 
         // ----------------------------------------------------------
         /**
@@ -176,16 +225,15 @@ public class Tree<E>
          *
          * @return Node Next node in the iterator
          */
-        @Override
         public Node<E> next()
         {
             return list.poll();
         }
 
+
         // ----------------------------------------------------------
         /**
          * Left out functionality
-         *
          */
         public void remove()
         {

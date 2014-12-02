@@ -86,7 +86,6 @@ public class PlannerActivity
      * @param position
      *            Position in the drawer that the user selected
      */
-    @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -103,7 +102,6 @@ public class PlannerActivity
      * button at the bottom of the navigation drawer. It will set the saved PID
      * to null and replace the current activity with the login activity.
      */
-    @Override
     public void resetLogin() {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
@@ -136,7 +134,6 @@ public class PlannerActivity
      * Called to restore the action bar to normal after closing the navigation
      * drawer, if it was changed
      */
-    @Override
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar
