@@ -1,5 +1,6 @@
 package org.gorilla.hokieplanner.guerilla;
 
+import com.vtaccess.Cas;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -16,6 +17,7 @@ public class Prefs {
     private static SharedPreferences prefs;
     private static CourseCache       courseCache;
     private static Checksheet        checksheet;
+    private static Cas               auth;
 
     /**
      * Initialize the static SharedPreferences object for global preferences
@@ -138,5 +140,25 @@ public class Prefs {
      */
     public static Checksheet getChecksheet() {
         return checksheet;
+    }
+
+    /**
+     * Set the global Cas authentication object after logging in
+     *
+     * @param auth
+     *            Cas object after logging in, or null if logging out
+     */
+    public static void setAuth(Cas auth) {
+        Prefs.auth = auth;
+    }
+
+    /**
+     * Get the global Cas authentication object that was set, or null if not
+     * currently logged in
+     *
+     * @return Cas auth object
+     */
+    public static Cas getAuth() {
+        return auth;
     }
 }
