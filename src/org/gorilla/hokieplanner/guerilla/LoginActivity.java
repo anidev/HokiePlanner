@@ -31,7 +31,7 @@ public class LoginActivity
     /**
      * Initialize the Auth object login
      */
-    private Cas     login;
+    private Cas      login;
 
     // --------------------------------------------------------
     /**
@@ -53,6 +53,7 @@ public class LoginActivity
     protected void onStart() {
         super.onStart();
         getRememberBox().setChecked(Prefs.isRememberingPID());
+        Prefs.setAuth(null);
         if (Prefs.isRememberingPID()) {
             getPIDField().setText(Prefs.getUserPID());
         }
@@ -89,6 +90,7 @@ public class LoginActivity
 
         if (login != null && login.isValidLoginInfo()
             && login.isActive()) {
+            Prefs.setAuth(login);
             startPlannerActivity(pid.toString());
         }
         else {

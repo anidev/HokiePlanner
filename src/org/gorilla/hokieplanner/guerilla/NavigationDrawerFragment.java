@@ -138,7 +138,7 @@ public class NavigationDrawerFragment
             new String[] { getString(R.string.title_section1),
                 getString(R.string.title_section2),
                 getString(R.string.title_section3),
-                getString(R.string.title_section4),}));
+                getString(R.string.title_section4), }));
         mDrawerListView
             .setItemChecked(mCurrentSelectedPosition, true);
 
@@ -164,8 +164,7 @@ public class NavigationDrawerFragment
         int actionText =
             (pid != null ? R.string.logout_text : R.string.login_text);
         String pidText =
-            (pid != null ? pid + "@vt.edu"
-                : "Not logged in");
+            (pid != null ? pid + "@vt.edu" : "Not logged in");
         mAccountListView.setAdapter(new ArrayAdapter<String>(
             getActionBar().getThemedContext(),
             R.layout.list_item_small,
@@ -284,6 +283,12 @@ public class NavigationDrawerFragment
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
+    /**
+     * Called at init and when the user selects a specific item
+     *
+     * @param position
+     *            The position in the list that the user selected
+     */
     private void selectItem(int position) {
         mCurrentSelectedPosition = position;
         if (mDrawerListView != null) {

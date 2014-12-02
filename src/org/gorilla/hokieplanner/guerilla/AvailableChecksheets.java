@@ -3,8 +3,10 @@ package org.gorilla.hokieplanner.guerilla;
 /**
  * Enum representing all the available checksheets, by text and by XML filename
  *
- * @author Anirudh Bagde
- * @version Dec 1, 2014
+ * @author Anirudh Bagde (anibagde)
+ * @author Weyland Chiang (chiangw)
+ * @author Sayan Ekambarapu (sayan96)
+ * @version Nov 9, 2014
  */
 public enum AvailableChecksheets {
     /**

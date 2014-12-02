@@ -187,6 +187,7 @@ public class PlannerActivity
         ProgressDialog progress = new ProgressDialog(this);
         progress.setMessage("Loading checksheet data...");
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setCancelable(false);
         new ChecksheetLoadTask(this, progress).execute(new Void[0]);
     }
 
@@ -257,6 +258,13 @@ public class PlannerActivity
             return rootView;
         }
 
+        /**
+         * Helper method to populate the welcome fragment with total credits,
+         * current major, and login/logout status
+         *
+         * @param rootView
+         *            The view that represents the welcome fragment
+         */
         private void populateWelcomeFragment(View rootView) {
             TextView majorValue =
                 (TextView)rootView
@@ -276,6 +284,17 @@ public class PlannerActivity
                 .setText(pidText);
         }
 
+        /**
+         * Helperd method to populate the checksheet fragment with data pulled
+         * from the XML files. This calls into the dedicated class for
+         * populating checksheets.
+         *
+         * @param rootView
+         *            The view that represents the checksheet fragment
+         * @param inflater
+         *            The layout inflater passed to the fragment while the view
+         *            is being created
+         */
         private void populateChecksheet(
             View rootView,
             LayoutInflater inflater) {

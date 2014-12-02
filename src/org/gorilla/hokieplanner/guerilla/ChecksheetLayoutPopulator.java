@@ -62,6 +62,12 @@ public class ChecksheetLayoutPopulator {
         }
     }
 
+    /**
+     * Add the widgets for CLE requirements
+     *
+     * @param tree
+     *            The tree for the CLE requirement
+     */
     private void addCLEs(Tree tree) {
         ArrayList<Node> nodes =
             ((Node)tree.getNodes().get(tree.getFirst()))
@@ -71,6 +77,18 @@ public class ChecksheetLayoutPopulator {
         }
     }
 
+    /**
+     * Add the widgets for all non-CLE course requirements. This method is
+     * called recursively for each course group encountered.
+     *
+     * @param tree
+     *            The tree for this requirement
+     * @param root
+     *            The root view that the widgets and course groups will be added
+     *            to
+     * @param parent
+     *            The parent object in the tree
+     */
     private void addItems(Tree tree, ViewGroup root, Object parent) {
         ArrayList<Node> nodes =
             ((Node)tree.getNodes().get(parent)).getChildren();
