@@ -32,6 +32,12 @@
         android:hint="@string/login_pass_hint"
         android:inputType="textPassword" />
 
+    <CheckBox
+        android:id="@+id/login_remember_box"
+        android:layout_width="@dimen/login_width"
+        android:layout_height="wrap_content"
+        android:text="@string/login_remember_text" />
+
     <LinearLayout
         android:id="@+id/login_submit_row"
         android:layout_width="@dimen/login_width"
@@ -46,11 +52,18 @@
             android:text="@string/login_submit_text" />
 
         <Button
-            android:id="@+id/login_skip_btn"
+            android:id="@+id/login_cancel_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="loginSkip"
-            android:text="@string/login_skip_text" />
+            android:onClick="loginCancel"
+            android:text="@string/login_cancel_text" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/login_warning_label"
+        android:layout_width="@dimen/login_width"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/login_warning_text" />
 
 </LinearLayout>

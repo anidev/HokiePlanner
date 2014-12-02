@@ -1,5 +1,7 @@
 package org.gorilla.hokieplanner.guerilla;
 
+import android.widget.Button;
+import android.widget.TextView;
 import android.content.Intent;
 import android.view.Gravity;
 import org.gorilla.hokieplanner.guerilla.R;
@@ -46,6 +48,16 @@ public class PlannerActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Prefs.initialize(this);
+
+        if (Prefs.getSelectedChecksheet() == null) {
+            Intent intent =
+                new Intent(this, MajorPickerActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_planner);
 
         navigationDrawerFragment =
@@ -86,7 +98,6 @@ public class PlannerActivity
      */
     @Override
     public void resetLogin() {
-        Prefs.setUserPID(null);
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
@@ -142,6 +153,30 @@ public class PlannerActivity
     }
 
     /**
+     * Called by the change course button in the layout, this method is
+     * specified in the XML file for the layout
+     *
+     * @param button
+     *            The button that was clicked to call this method
+     */
+    public void changeCourse(View button) {
+        Intent intent = new Intent(this, MajorPickerActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    /**
+     * Called by the login/logout button in the layout, this method is specified
+     * in the XML file for the layout
+     *
+     * @param button
+     *            The button that was clicked to call this method
+     */
+    public void loginLogout(View button) {
+        resetLogin();
+    }
+
+    /**
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment
@@ -182,12 +217,46 @@ public class PlannerActivity
             LayoutInflater inflater,
             ViewGroup container,
             Bundle savedInstanceState) {
+            int layoutId = 0;
+            switch (getArguments().getInt(ARG_SECTION_NUMBER)) {
+                case 1:
+                    layoutId = R.layout.fragment_welcome;
+                    break;
+                case 2:
+                    layoutId = R.layout.fragment_checksheet;
+                    break;
+                case 3:
+                    layoutId = R.layout.fragment_diagram;
+                    break;
+                case 4:
+                    layoutId = R.layout.fragment_timetable;
+                    break;
+            }
             View rootView =
-                inflater.inflate(
-                    R.layout.fragment_main,
-                    container,
-                    false);
+                inflater.inflate(layoutId, container, false);
+            if (layoutId == R.layout.fragment_welcome) {
+                populateWelcomeFragment(rootView);
+            }
             return rootView;
+        }
+
+        private void populateWelcomeFragment(View rootView) {
+            TextView majorValue =
+                (TextView)rootView
+                    .findViewById(R.id.selected_major_value);
+            majorValue.setText(AvailableChecksheets.valueOf(
+                Prefs.getSelectedChecksheet()).toString());
+            Bundle extras = getActivity().getIntent().getExtras();
+            String pid =
+                (extras != null ? extras.getString("pid") : null);
+            int actionText =
+                (pid != null ? R.string.logout_text
+                    : R.string.login_text);
+            ((Button)rootView.findViewById(R.id.login_logout_btn))
+                .setText(actionText);
+            String pidText = (pid != null ? pid + "@vt.edu" : "");
+            ((TextView)rootView.findViewById(R.id.welcome_name_label))
+                .setText(pidText);
         }
 
         @Override

@@ -5,8 +5,8 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="10"
-        android:targetSdkVersion="21" />
+        android:minSdkVersion="14"
+        android:targetSdkVersion="21"/>
 
     <instrumentation
         android:name="android.test.InstrumentationTestRunner"
@@ -21,7 +21,7 @@
         <uses-library android:name="android.test.runner" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".PlannerActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,12 +30,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PlannerActivity"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" >
+        </activity>
+        <activity
+            android:name=".MajorPickerActivity"
+            android:label="@string/title_activity_major_picker" >
         </activity>
     </application>
 

@@ -1,12 +1,9 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Application theme, contains styles common for all API levels -->
-    <style name="AppTheme" parent="AppBaseTheme"></style>
-
-    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-
-        <!-- actionBarStyle is for compat, android:actionBarStyle for API level 11+ -->
-        <item name="actionBarStyle">@style/HokieActionBarStyle</item>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@drawable/hokie_primary</item>
+        <item name="colorPrimaryDark">@drawable/hokie_primary</item>
     </style>
 
     <style name="HokieActionBarStyle" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">

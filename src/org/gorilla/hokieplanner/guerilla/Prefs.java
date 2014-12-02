@@ -47,10 +47,55 @@ public class Prefs {
      *            PID string, or null to unset it
      */
     public static void setUserPID(String pid) {
-        String finalPid=pid;
+        String finalPid = pid;
         if (finalPid != null) {
             finalPid = finalPid.trim();
         }
         prefs.edit().putString("pid", finalPid).apply();
+    }
+
+    /**
+     * Get whether the app is remembering the user's PID, true by default
+     *
+     * @return Whether remembering PID
+     */
+    public static boolean isRememberingPID() {
+        return prefs.getBoolean("pidremember", true);
+    }
+
+    /**
+     * Set whether the app should remember the user's PID
+     *
+     * @param remembering
+     *            Whether remembering PID
+     */
+    public static void setRememberingPID(boolean remembering) {
+        prefs.edit().putBoolean("pidremember", remembering).commit();
+    }
+
+    /**
+     * Get the user-selected checksheet
+     *
+     * @return Name of the AvailableChecksheets enum corresponding to the one
+     *         the user selected, or null if the user has not yet selected
+     *         anything
+     */
+    public static String getSelectedChecksheet() {
+        String checksheet = prefs.getString("checksheet", null);
+        if (checksheet != null && checksheet.equals("")) {
+            checksheet = null;
+        }
+        return checksheet;
+    }
+
+    /**
+     * Set the user-selected checksheet, or null to reset it
+     *
+     * @param checksheet
+     *            This should be the name of the AvailableChecksheets enum that
+     *            corresponds to the selected checksheet
+     */
+    public static void setSelectedChecksheet(String checksheet) {
+        prefs.edit().putString("checksheet", checksheet).commit();
     }
 }

@@ -138,7 +138,8 @@ public class NavigationDrawerFragment
             android.R.id.text1,
             new String[] { getString(R.string.title_section1),
                 getString(R.string.title_section2),
-                getString(R.string.title_section3), }));
+                getString(R.string.title_section3),
+                getString(R.string.title_section4),}));
         mDrawerListView
             .setItemChecked(mCurrentSelectedPosition, true);
 
@@ -159,12 +160,14 @@ public class NavigationDrawerFragment
                     }
                 }
             });
+        Bundle extras = getActivity().getIntent().getExtras();
+        String pid =
+            (extras != null ? extras.getString("pid") : null);
         int actionText =
-            (Prefs.getUserPID() != null ? R.string.logout_text
-                : R.string.login_text);
+            (pid != null ? R.string.logout_text : R.string.login_text);
         String pidText =
-            (Prefs.getUserPID() != null ? Prefs.getUserPID()
-                + "@vt.edu" : "Not logged in");
+            (pid != null ? pid + "@vt.edu"
+                : "Not logged in");
         mAccountListView.setAdapter(new ArrayAdapter<String>(
             getActionBar().getThemedContext(),
             R.layout.list_item_small,
