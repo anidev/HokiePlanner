@@ -14,17 +14,4 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <include
-            android:id="@+id/checksheetCompleted"
-            layout="@layout/checksheet_status_group" />
-
-        <include
-            android:id="@+id/checksheetInProgress"
-            layout="@layout/checksheet_status_group" />
-
-        <include
-            android:id="@+id/checksheetNotStarted"
-            layout="@layout/checksheet_status_group" />
-    </LinearLayout>
-
 </ScrollView>
