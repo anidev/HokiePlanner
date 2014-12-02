@@ -4,7 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 /**
- * Static convenience class for managing shared preferences
+ * Static convenience class for managing shared preferences and globally
+ * accessible objects
  *
  * @author Anirudh Bagde (anibagde)
  * @author Weyland Chiang (chiangw)
@@ -13,6 +14,8 @@ import android.content.SharedPreferences;
  */
 public class Prefs {
     private static SharedPreferences prefs;
+    private static CourseCache       courseCache;
+    private static Checksheet        checksheet;
 
     /**
      * Initialize the static SharedPreferences object for global preferences
@@ -81,21 +84,59 @@ public class Prefs {
      *         anything
      */
     public static String getSelectedChecksheet() {
-        String checksheet = prefs.getString("checksheet", null);
-        if (checksheet != null && checksheet.equals("")) {
-            checksheet = null;
+        String checksheetName = prefs.getString("checksheet", null);
+        if (checksheetName != null && checksheetName.equals("")) {
+            checksheetName = null;
         }
-        return checksheet;
+        return checksheetName;
     }
 
     /**
      * Set the user-selected checksheet, or null to reset it
      *
-     * @param checksheet
+     * @param checksheetName
      *            This should be the name of the AvailableChecksheets enum that
      *            corresponds to the selected checksheet
      */
-    public static void setSelectedChecksheet(String checksheet) {
-        prefs.edit().putString("checksheet", checksheet).commit();
+    public static void setSelectedChecksheet(String checksheetName) {
+        prefs.edit().putString("checksheet", checksheetName).commit();
+    }
+
+    /**
+     * Set the global app course cache, with data pulled from online
+     *
+     * @param courseCache
+     *            CourseCache object to set
+     */
+    public static void setCourseCache(CourseCache courseCache) {
+        Prefs.courseCache = courseCache;
+    }
+
+    /**
+     * Get the global app course cache
+     *
+     * @return CourseCache object
+     */
+    public static CourseCache getCourseCache() {
+        return courseCache;
+    }
+
+    /**
+     * Set the checksheet object loaded from the XML file
+     *
+     * @param checksheet
+     *            Checksheet object
+     */
+    public static void setChecksheet(Checksheet checksheet) {
+        Prefs.checksheet = checksheet;
+    }
+
+    /**
+     * Return the checksheet object that was loaded from the XML file
+     *
+     * @return Checksheet object
+     */
+    public static Checksheet getChecksheet() {
+        return checksheet;
     }
 }

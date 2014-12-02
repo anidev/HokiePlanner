@@ -15,7 +15,6 @@ public class Checksheet
 {
     private ArrayList<Tree<RequiredItem>> list;
 
-
     // ----------------------------------------------------------
     /**
      * Create a new Checksheet object.

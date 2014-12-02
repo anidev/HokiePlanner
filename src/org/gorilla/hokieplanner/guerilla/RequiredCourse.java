@@ -19,7 +19,6 @@ public class RequiredCourse
     private int    to;
     private String name;
 
-
     // ----------------------------------------------------------
     /**
      * returns the department name of the course

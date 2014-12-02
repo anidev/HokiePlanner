@@ -57,7 +57,7 @@ public class Tree<E>
      */
     public Node<E> addNode(E data)
     {
-        if (first != null)
+        if (first == null)
         {
             first = data;
         }
@@ -85,11 +85,13 @@ public class Tree<E>
         return newNode;
     }
 
-    public E getFirst()
-    {
+    /**
+     * Get the first data node of this tree (which could be the root node)
+     * @return First node
+     */
+    public E getFirst() {
         return first;
     }
-
 
     // ----------------------------------------------------------
     /**
