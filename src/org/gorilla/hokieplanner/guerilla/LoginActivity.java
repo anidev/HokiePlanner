@@ -1,6 +1,6 @@
 package org.gorilla.hokieplanner.guerilla;
 
-import android.R;
+import javax.security.auth.login.LoginException;
 import android.widget.CheckBox;
 import android.content.Intent;
 import android.widget.EditText;
@@ -21,8 +21,8 @@ public class LoginActivity
 
     // --------------------------------------------------------
     /**
-     * Creates a Edit Text object so we can set the error message
-     * on a unsuccessful login attempt.
+     * Creates a Edit Text object so we can set the error message on a
+     * unsuccessful login attempt.
      */
     private EditText login_pass_field;
 
@@ -30,12 +30,12 @@ public class LoginActivity
     /**
      * Initialize the Auth object login
      */
-    private Auth login;
+    private Auth     login;
 
     // --------------------------------------------------------
     /**
-     * Once this activity is created, sets the content view
-     * to the activity_login
+     * Once this activity is created, sets the content view to the
+     * activity_login
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +45,8 @@ public class LoginActivity
 
     // --------------------------------------------------------
     /**
-     * Sets the remember box if it was previously checked
-     * Also updates the PID field is the remember box was set
+     * Sets the remember box if it was previously checked Also updates the PID
+     * field is the remember box was set
      */
     @Override
     protected void onStart() {
@@ -65,30 +65,32 @@ public class LoginActivity
      *            The button that was clicked to call this method
      */
     public void loginSubmit(View button) {
+        login_pass_field =
+            (EditText)findViewById(R.id.login_pass_field);
         char[] pid = getAndSavePID().toCharArray();
         char[] password =
-            ((EditText)findViewById(R.id.login_pass_field)).getText()
-                .toString().toCharArray();
+            (login_pass_field).getText().toString().toCharArray();
 
-        if (getPIDField().getText().toString().isEmpty())
-        {
+        if (getPIDField().getText().toString().isEmpty()) {
             getPIDField().setError("Username should not be blank");
         }
-        else if (login_pass_field.toString().isEmpty())
-        {
+        else if (login_pass_field.toString().isEmpty()) {
             login_pass_field.setError("Password should not be blank");
         }
-        else
-        {
-            login = new Auth(pid, password);
+        else {
+            try {
+                login = new Auth(pid, password);
+            }
+            catch (LoginException e) {
+                login = null;
+            }
         }
 
-        if (login.isValidLoginInfo() && login.isActive())
-        {
+        if (login != null && login.isValidLoginInfo()
+            && login.isActive()) {
             startPlannerActivity(pid.toString());
         }
-        else
-        {
+        else {
             login_pass_field.setError("Login Failed");
             login_pass_field.setText("");
         }
@@ -104,12 +106,6 @@ public class LoginActivity
     public void loginCancel(View button) {
         getAndSavePID();
         startPlannerActivity(null);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        finish();
     }
 
     // --------------------------------------------------------
@@ -133,6 +129,7 @@ public class LoginActivity
         Intent intent = new Intent(this, PlannerActivity.class);
         intent.putExtra("pid", pid);
         startActivity(intent);
+        finish();
     }
 
     // --------------------------------------------------------

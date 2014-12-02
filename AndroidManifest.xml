@@ -5,8 +5,8 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="10"
-        android:targetSdkVersion="20"/>
+        android:minSdkVersion="14"
+        android:targetSdkVersion="21"/>
 
     <application
         android:allowBackup="true"
@@ -25,6 +25,10 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" >
+        </activity>
+        <activity
+            android:name=".MajorPickerActivity"
+            android:label="@string/title_activity_major_picker" >
         </activity>
     </application>
 
