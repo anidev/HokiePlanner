@@ -1,7 +1,7 @@
 package org.gorilla.hokieplanner.guerilla.test;
 
 import org.gorilla.hokieplanner.guerilla.Node;
-import student.TestCase;
+import android.test.AndroidTestCase;
 
 // -------------------------------------------------------------------------
 /**
@@ -12,7 +12,7 @@ import student.TestCase;
  * @author Sayan Ekambarapu (sayan96)
  * @version December 1, 2014
  */
-public class NodeTest extends TestCase
+public class NodeTest extends AndroidTestCase
 {
     // ----------------------------------------------------------
     /**
