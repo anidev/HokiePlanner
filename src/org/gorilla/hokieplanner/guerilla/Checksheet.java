@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class Checksheet
 {
-    private ArrayList<Requirement> list;
+    private ArrayList<Tree> list;
 
-    public Checksheet(ArrayList<Requirement> rList)
+    public Checksheet(ArrayList<Tree> rList)
     {
         list = rList;
     }
@@ -14,5 +14,9 @@ public class Checksheet
     public int size()
     {
         return list.size();
+    }
+
+    public ArrayList<Tree> getRequirementList() {
+        return list;
     }
 }

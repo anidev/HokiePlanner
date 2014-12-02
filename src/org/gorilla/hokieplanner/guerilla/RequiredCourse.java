@@ -6,7 +6,7 @@ public class RequiredCourse
     private String department;
     private String from;
     private String to;
-
+    private String name;
 
     public String getDepartment()
     {
@@ -44,11 +44,26 @@ public class RequiredCourse
     }
 
 
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
     public RequiredCourse(String dep, String begin, String end)
     {
         department = dep;
         from = begin;
         to = end;
-
     }
 }

@@ -1,5 +1,6 @@
 package org.gorilla.hokieplanner.guerilla;
 
+import android.app.ProgressDialog;
 import android.widget.Button;
 import android.widget.TextView;
 import android.content.Intent;
@@ -70,6 +71,12 @@ public class PlannerActivity
         navigationDrawerFragment.setUp(
             R.id.main_navdrawer,
             drawerLayout);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        loadCourseInfo();
     }
 
     /**
@@ -177,6 +184,16 @@ public class PlannerActivity
     }
 
     /**
+     * Load checksheet XML and download course cache
+     */
+    private void loadCourseInfo() {
+        ProgressDialog progress = new ProgressDialog(this);
+        progress.setMessage("Loading checksheet data...");
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        new ChecksheetLoadTask(this, progress).execute(new Void[0]);
+    }
+
+    /**
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment
@@ -237,6 +254,9 @@ public class PlannerActivity
             if (layoutId == R.layout.fragment_welcome) {
                 populateWelcomeFragment(rootView);
             }
+            else if (layoutId == R.layout.fragment_checksheet) {
+                populateChecksheet(rootView, inflater);
+            }
             return rootView;
         }
 
@@ -257,6 +277,13 @@ public class PlannerActivity
             String pidText = (pid != null ? pid + "@vt.edu" : "");
             ((TextView)rootView.findViewById(R.id.welcome_name_label))
                 .setText(pidText);
+        }
+
+        private void populateChecksheet(
+            View rootView,
+            LayoutInflater inflater) {
+            new ChecksheetLayoutPopulator(rootView, inflater)
+                .populate();
         }
 
         @Override
