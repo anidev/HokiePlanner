@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <checksheet type="major" department="CS" year="2017">
   <requirement name="cle">
-    <cle area="1" total="6" />
-    <cle area="2" total="6" />
+    <cle area="1" total="6"/>
+    <cle area="2" total="6"/>
     <cle area="3" total="6" />
     <cle area="4" total="4" />
     <cle area="5" total="8" />

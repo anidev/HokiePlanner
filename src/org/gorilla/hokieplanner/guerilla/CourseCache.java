@@ -31,8 +31,8 @@ public class CourseCache {
      */
     public static String getCourseID(RequiredCourse course) {
         String dep = course.getDepartment();
-        String numFrom = course.getFrom();
-        String numTo = course.getTo();
+        int numFrom = course.getFrom();
+        int numTo = course.getTo();
         String name = course.getName();
         if(dep!=null && !dep.equals("")) {
             return dep+numFrom+"-"+numTo;

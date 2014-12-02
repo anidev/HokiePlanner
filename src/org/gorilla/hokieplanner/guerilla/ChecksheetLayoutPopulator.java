@@ -42,7 +42,7 @@ public class ChecksheetLayoutPopulator {
         Checksheet checksheet = Prefs.getChecksheet();
         ViewGroup layout =
             (ViewGroup)rootView.findViewById(R.id.checksheet_layout);
-        for (Tree tree : checksheet.getRequirementList()) {
+        for (Tree tree : checksheet.getList()) {
             ViewGroup groupLayout =
                 (ViewGroup)inflater.inflate(
                     R.layout.checksheet_status_group,
@@ -174,9 +174,9 @@ public class ChecksheetLayoutPopulator {
             return data.getName();
         }
         else {
-            String from = course.getFrom();
-            String to = course.getTo();
-            if (from.equals(to)) {
+            int from = course.getFrom();
+            int to = course.getTo();
+            if (from==to) {
                 return course.getDepartment() + " " + from;
             }
             else {
