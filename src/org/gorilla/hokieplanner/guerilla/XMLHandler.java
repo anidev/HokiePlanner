@@ -1,5 +1,6 @@
 package org.gorilla.hokieplanner.guerilla;
 
+import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Element;
 import org.w3c.dom.Document;
@@ -40,8 +41,8 @@ public class XMLHandler
 
     // ----------------------------------------------------------
     /**
-     * Parses an XML file using a DOM parser and returns a checksheet object to
-     * represent the XML checksheet file
+     * Parses an XML file using a DOM parser and returns a Tree to represent the
+     * checksheet
      *
      * @param str
      *            a string representing the name of the file
@@ -49,64 +50,169 @@ public class XMLHandler
      */
     public Checksheet parse(String str)
     {
-        ArrayList<RequiredItem> list = new ArrayList<RequiredItem>();
-        ArrayList<Requirement> requiredList = new ArrayList<Requirement>();
+        ArrayList<Tree<RequiredItem>> treeList =
+            new ArrayList<Tree<RequiredItem>>();
+
+        AssetManager assetManager = context.getAssets();
+        InputStream inputStream = null;
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = null;
+        Document document = null;
         try
         {
-            AssetManager assetManager = context.getAssets();
-            InputStream inputStream = assetManager.open(str);
-
-            DocumentBuilderFactory factory =
-                DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse(inputStream);
+            inputStream = assetManager.open(str);
+            builder = factory.newDocumentBuilder();
+            document = builder.parse(inputStream);
 
             Element root = document.getDocumentElement();
             NodeList nList = root.getElementsByTagName("requirement");
-
+            treeList.add(new Tree<RequiredItem>());
             for (int i = 0; i < nList.getLength(); i++)
             {
-                Tree tree = new Tree();
+                Tree<RequiredItem> tree = new Tree<RequiredItem>();
                 org.w3c.dom.Node item = nList.item(i);
                 Element element = (Element)item;
-                NodeList courseList = element.getElementsByTagName("course");
-                for (int j = 0; j < courseList.getLength(); j++)
-                {
-                    org.w3c.dom.Node courseItem = courseList.item(j);
-                    Element courseE = (Element)courseItem;
-                    String dep = courseE.getAttribute("department");
-                    String num = courseE.getAttribute("number");
-                    if (num != "" || num != null)
-                    {
-                        RequiredCourse course = new RequiredCourse(dep, num, num);
-                    }
-                    else
-                    {
-                        String from = courseE.getAttribute("from");
-                        String to = courseE.getAttribute("to");
-                        RequiredCourse course = new RequiredCourse(dep, from, to);
-                    }
-                }
+                String name = element.getAttribute("name");
+                int total = Integer.parseInt(element.getAttribute("total"));
+                Requirement requirement = new Requirement(name, total);
+                tree.addNode(requirement);
 
+                NodeList cleList = element.getElementsByTagName("cle");
+                addCle(cleList, tree, requirement);
+
+                NodeList courseList = element.getElementsByTagName("course");
+                addCourses(courseList, tree, requirement);
+                NodeList groupList = element.getElementsByTagName("group");
+                addGroup(groupList, tree, requirement);
+                treeList.add(tree);
+                treeList.add(new Tree<RequiredItem>());
             }
 
         }
+        catch (ParserConfigurationException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         catch (SAXException e)
         {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         catch (IOException e)
         {
-            e.printStackTrace();
-        }
-        catch (ParserConfigurationException e)
-        {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        Checksheet sheet = new Checksheet(requiredList);
+        Checksheet sheet = new Checksheet(treeList);
 
         return sheet;
+    }
 
+
+    // ----------------------------------------------------------
+    /**
+     * A helper method to add groups from a list into the tree
+     *
+     * @param list
+     *            a list of groups
+     * @param tree
+     *            a tree to add to
+     * @param parent
+     *            the parent node to add other nodes
+     */
+    public void addGroup(
+        NodeList list,
+        Tree<RequiredItem> tree,
+        RequiredItem parent)
+    {
+        for (int j = 0; j < list.getLength(); j++)
+        {
+            org.w3c.dom.Node groupItem = list.item(j);
+            Element element = (Element)groupItem;
+            Integer total = Integer.parseInt(element.getAttribute("total"));
+            CourseGroup group = new CourseGroup(total);
+            tree.addNode(group, parent);
+            NodeList courseList = element.getElementsByTagName("course");
+            addCourses(courseList, tree, group);
+            NodeList groupList = element.getElementsByTagName("group");
+            if (groupList.getLength() > 0)
+            {
+                addGroup(list, tree, group);
+            }
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * A helper method to add cle's from a list into the tree
+     *
+     * @param list
+     *            a list of cle's
+     * @param tree
+     *            a tree to add to
+     * @param parent
+     *            the parent node to add other nodes
+     */
+    public void addCle(
+        NodeList list,
+        Tree<RequiredItem> tree,
+        RequiredItem parent)
+    {
+        for (int j = 0; j < list.getLength(); j++)
+        {
+            org.w3c.dom.Node cleItem = list.item(j);
+            Element element = (Element)cleItem;
+            Integer total = Integer.parseInt(element.getAttribute("total"));
+            Integer area = Integer.parseInt(element.getAttribute("area"));
+            Cle cle = new Cle(area, total);
+            tree.addNode(cle, parent);
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * A helper method to add courses from a list into the tree
+     *
+     * @param list
+     *            a list of courses
+     * @param tree
+     *            a tree to add to
+     * @param parent
+     *            the parent node to add other nodes
+     */
+    public void addCourses(
+        NodeList list,
+        Tree<RequiredItem> tree,
+        RequiredItem parent)
+    {
+        for (int i = 0; i < list.getLength(); i++)
+        {
+            org.w3c.dom.Node courseItem = list.item(i);
+            Element courseE = (Element)courseItem;
+            String dep = courseE.getAttribute("department");
+            int num = Integer.parseInt(courseE.getAttribute("number"));
+            String name = courseE.getAttribute("name");
+            if (name != "" || name != null)
+            {
+                RequiredCourse course = new RequiredCourse(name);
+                tree.addNode(course, parent);
+            }
+            else if (num != 0)
+            {
+                RequiredCourse course = new RequiredCourse(dep, num, num);
+                tree.addNode(course, parent);
+            }
+            else
+            {
+                int from = Integer.parseInt(courseE.getAttribute("from"));
+                int to = Integer.parseInt(courseE.getAttribute("to"));
+                RequiredCourse course = new RequiredCourse(dep, from, to);
+                tree.addNode(course, parent);
+            }
+        }
     }
 }

@@ -85,6 +85,11 @@ public class Tree<E>
         return newNode;
     }
 
+    public E getFirst()
+    {
+        return first;
+    }
+
 
     // ----------------------------------------------------------
     /**

@@ -1,12 +1,7 @@
 package org.gorilla.hokieplanner.guerilla.test;
 import org.gorilla.hokieplanner.guerilla.Checksheet;
-import org.gorilla.hokieplanner.guerilla.Requirement;
-import org.gorilla.hokieplanner.guerilla.RequiredItem;
 import org.gorilla.hokieplanner.guerilla.XMLHandler;
-import java.io.File;
-import java.util.ArrayList;
 import android.test.AndroidTestCase;
-import android.content.Context;
 
 // -------------------------------------------------------------------------
 /**
@@ -19,17 +14,21 @@ import android.content.Context;
  */
 public class XMLHandlerTest extends AndroidTestCase
 {
-    XMLHandler handle;
+    private XMLHandler handle;
 
     protected void setUp()
     {
         handle = new XMLHandler(getContext());
     }
 
+    // ----------------------------------------------------------
+    /**
+     * A method to test the parse method from the XMLHandler class
+     */
     public void testParse()
     {
 
-       // Checksheet sheet = handle.parse("Checksheet-cs-2017.xml");
-        assertEquals(4, handle.parse("Checksheet-cs-2017.xml"));
+       Checksheet sheet = handle.parse("Checksheet-cs-2017.xml");
+        assertEquals(4, sheet.size());
     }
 }
