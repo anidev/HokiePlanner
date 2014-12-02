@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checksheet type="major" department="CS" year="2017">
+  <requirement type="cle">
+    <cle area="1" total="6" />
+    <cle area="2" total="6" />
+    <cle area="3" total="6" />
+    <cle area="4" total="4" />
+    <cle area="5" total="8" />
+    <cle area="6" total="1" />
+    <cle area="7" total="3" />
+    <!-- TODO add rest of CLE requirements -->
+  </requirement>
+  <requirement total="1" name="Required EngE Courses">
+    <group total="2">
+      <course department="enge" number="1024" />
+      <group total="1">
+        <course department="enge" number="1104" />
+        <course department="enge" number="1114" />
+      </group>
+    </group>
+    <course department="enge" number="1434" />
+  </requirement>
+  <requirement name="Natural Science Elective/Lab" total="3">
+    <course department="chem" number="1035" />
+    <course department="chem" number="1045" />
+    <course department="phys" number="2305" />
+    <group total="1">
+      <group total="1">
+        <course department="chem" number="1036" />
+        <course department="chem" number="1046" />
+      </group>
+      <course department="phys" number="2306" />
+      <course name="Biology 8CH sequence" />
+      <!-- TODO add course details for this sequence later -->
+    </group>
+  </requirement>
+  <requirement name="Non-technical Course Requirement">
+    <credits total="30" />
+    <!-- TODO maybe add details about what qualifies as non-technical here -->
+  </requirement>
+  <requirement name="CS Theory Course" total="1">
+    <course department="cs" number="4104" />
+    <course department="cs" number="4114" />
+    <course department="cs" number="4124" />
+  </requirement>
+  <requirement name="CS 3/4XXX Elective" total="2">
+    <course department="cs" from="3000" to="4999" />
+  </requirement>
+  <requirement name="CS 4XXX Elective" total="2">
+    <course department="cs" from="4000" to="4999" />
+  </requirement>
+  <requirement name="Technical Elective" total="1">
+    <course department="cs" from="3000" to="5999" />
+    <course department="acis" number="4514" />
+    <course department="acis" number="4524" />
+    <course department="acis" number="4684" />
+    <course department="acis" number="4554" />
+    <course department="acis" number="4564" />
+    <course department="aoe" number="4434" />
+    <course department="bit" number="4554" />
+    <course department="bit" number="4564" />
+    <course department="bit" number="4434" />
+    <course department="bit" number="4444" />
+    <course department="bit" number="4514" />
+    <course department="bit" number="4544" />
+    <course department="bit" number="4574" />
+    <course department="bit" number="4614" />
+    <course department="cmda" number="3605" />
+    <course department="cmda" number="3606" />
+    <course department="cmda" number="4604" />
+    <course department="comm" number="4374" />
+    <course department="ece" number="3544" />
+    <course department="ece" number="4524" />
+    <course department="ece" number="4550" />
+    <course department="ece" number="4560" />
+    <course department="ece" number="4564" />
+    <course department="ece" number="4580" />
+    <course department="ece" number="4704" />
+    <course department="ece" number="4984" />
+    <course department="geog" number="4314" />
+    <course department="geog" number="4324" />
+    <course department="geog" number="4084" />
+    <course department="geos" number="4084" />
+    <course department="math" number="4175" />
+    <course department="math" number="4176" />
+    <course department="math" number="4445" />
+    <course department="math" number="4454" />
+    <course department="mus" number="3065" />
+    
+  </requirement>
+  <requirement name="Capstone Requirement" total="1">
+    <course department="cs" number="4284" />
+    <course department="cs" number="4624" />
+    <course department="cs" number="4634" />
+    <course department="cs" number="4644" />
+    <course department="cs" number="4704" />
+    <course department="cs" number="4784" />
+    <course department="cs" number="4884" />
+  </requirement>
+  <requirement name="English" total="3">
+      <course department="engl" number="1105" />
+      <course department="engl" number="1106" />
+      <course department="engl" number="3764" />
+  </requirement>
+  <requirement name="Communications" total="1">
+      <course department="comm" number="2004" />
+  </requirement>
+  <requirement name="Statistics" total="1">
+      <course department="stat" number="4705" />
+      <course department="stat" number="4714" />
+  </requirement>
+</checksheet>
+<!-- TODO add more detailed descriptions for the requirements -->
