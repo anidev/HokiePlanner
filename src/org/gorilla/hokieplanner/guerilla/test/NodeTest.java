@@ -1,5 +1,6 @@
 package org.gorilla.hokieplanner.guerilla.test;
 
+import java.util.ArrayList;
 import org.gorilla.hokieplanner.guerilla.Node;
 import android.test.AndroidTestCase;
 
@@ -65,26 +66,55 @@ public class NodeTest extends AndroidTestCase
     public void testChildren()
     {
         // Test Case 1
+        ArrayList<Node<Integer>> children;
         assertEquals(2, node1.addChild(2).getData().intValue());
         assertEquals(3, node1.addChild(3).getData().intValue());
-        assertEquals("2 3", node1.getChildren().toString());
-
-        // Test Case 2
-        assertEquals(6, node1.addChild(6).getData().intValue());
-        assertEquals(7, node1.addChild(7).getData().intValue());
-        assertEquals(8, node1.getChildren().get(0).addChild(8).
-            getData().intValue());
-        assertEquals(9, node1.getChildren().get(0).addChild(9).
-            getData().intValue());
-
-        // Test Case 3
-        assertEquals(11, node3.addChild(11).getData().intValue());
-        assertEquals(12, node3.addChild(11).getData().intValue());
-        assertEquals(13, node3.addChild(11).getData().intValue());
-        assertEquals(14, node3.getChildren().get(2).addChild(11).
-            getData().intValue());
-        assertEquals(15, node3.getChildren().get(2).addChild(11).
-            getData().intValue());
+        children = node1.getChildren();
+        assertEquals(2, children.get(0).getData().intValue());
+        assertEquals(3, children.get(1).getData().intValue());
     }
 
+    /**
+     * Test Case 2
+     */
+    public void testChildren2()
+    {
+        ArrayList<Node<Integer>> children;
+        assertEquals(6, node2.addChild(6).getData().intValue());
+        assertEquals(7, node2.addChild(7).getData().intValue());
+        assertEquals(8, node2.getChildren().get(0).addChild(8).
+            getData().intValue());
+        assertEquals(9, node2.getChildren().get(0).addChild(9).
+            getData().intValue());
+        children = node2.getChildren();
+        assertEquals(2, children.size());
+        assertEquals(6, children.get(0).getData().intValue());
+        assertEquals(7, children.get(1).getData().intValue());
+        children = children.get(0).getChildren();
+        assertEquals(8, children.get(0).getData().intValue());
+        assertEquals(9, children.get(1).getData().intValue());
+    }
+
+    /**
+     * Test Case 3
+     */
+    public void testChildren3()
+    {
+        // Test Case 3
+        ArrayList<Node<Integer>> children;
+        assertEquals(11, node3.addChild(11).getData().intValue());
+        assertEquals(12, node3.addChild(12).getData().intValue());
+        assertEquals(13, node3.addChild(13).getData().intValue());
+        assertEquals(14, node3.getChildren().get(2).addChild(14).
+            getData().intValue());
+        assertEquals(15, node3.getChildren().get(2).addChild(15).
+            getData().intValue());
+        children = node3.getChildren();
+        assertEquals(11, children.get(0).getData().intValue());
+        assertEquals(12, children.get(1).getData().intValue());
+        assertEquals(13, children.get(2).getData().intValue());
+        children = children.get(2).getChildren();
+        assertEquals(14, children.get(0).getData().intValue());
+        assertEquals(15, children.get(1).getData().intValue());
+    }
 }
