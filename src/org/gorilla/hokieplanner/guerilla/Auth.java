@@ -1,6 +1,5 @@
 package org.gorilla.hokieplanner.guerilla;
 
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -229,6 +228,7 @@ public class Auth
      *
      * @param username The user's name
      * @param password the password of the user.
+     *
      * @return True if successful, false if IOException or bad Certificate
      *
      * @throws LoginException indicates that the username
@@ -498,6 +498,7 @@ public class Auth
      * @param password the password of the user.
      * @param filePath the file path that the SSL certificate should be
      * saved in.
+     *
      * @return returns true if successful, false if there was an IOException,
      *          and false if the Certificate wasn't correctly obtained.
      *
@@ -699,6 +700,8 @@ public class Auth
 
     // --------------------------------------------------------
     /**
+     * Checks whether the session is still active
+     *
      * @return the refreshSession
      */
     public boolean isRefreshSession() {
