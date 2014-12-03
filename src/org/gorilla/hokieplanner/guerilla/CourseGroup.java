@@ -12,10 +12,8 @@ package org.gorilla.hokieplanner.guerilla;
  * @version Dec 1, 2014
  */
 public class CourseGroup
-    extends RequiredItem
-{
+    extends RequiredItem {
     private int total;
-
 
     // ----------------------------------------------------------
     /**
@@ -23,11 +21,9 @@ public class CourseGroup
      *
      * @return the number of classes that need to be taken from that group
      */
-    public int getTotal()
-    {
+    public int getTotal() {
         return total;
     }
-
 
     // ----------------------------------------------------------
     /**
@@ -37,19 +33,18 @@ public class CourseGroup
      *            sets the number of classes that need to be taken from the
      *            group.
      */
-    public void setTotal(int total)
-    {
+    public void setTotal(int total) {
         this.total = total;
     }
-
 
     // ----------------------------------------------------------
     /**
      * Create a new CourseGroup object.
-     * @param num the number of classes
+     *
+     * @param num
+     *            the number of classes
      */
-    public CourseGroup(int num)
-    {
+    public CourseGroup(int num) {
         total = num;
     }
 

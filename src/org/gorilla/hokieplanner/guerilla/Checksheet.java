@@ -18,13 +18,13 @@ public class Checksheet
     // ----------------------------------------------------------
     /**
      * Create a new Checksheet object.
-     * @param rList the list to be used for the class
+     *
+     * @param rList ArrayList of Requirements
      */
     public Checksheet(ArrayList<Tree<RequiredItem>> rList)
     {
         list = rList;
     }
-
 
     // ----------------------------------------------------------
     /**
