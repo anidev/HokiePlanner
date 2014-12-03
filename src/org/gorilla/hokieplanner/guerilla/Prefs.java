@@ -161,4 +161,11 @@ public class Prefs {
     public static Cas getAuth() {
         return auth;
     }
+
+    /**
+     * Clears all stored preferences, generally to be used for testing
+     */
+    public static void clear() {
+        prefs.edit().clear().commit();
+    }
 }
