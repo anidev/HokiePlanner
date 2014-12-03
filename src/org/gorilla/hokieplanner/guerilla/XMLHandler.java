@@ -44,103 +44,90 @@ public class XMLHandler {
      *            a string representing the name of the file
      * @return a Checksheet object to represent the XML checksheet file
      */
-    public Checksheet parse(String str)
-    {
+    public Checksheet parse(String str) {
         ArrayList<Tree<RequiredItem>> treeList =
             new ArrayList<Tree<RequiredItem>>();
 
         AssetManager assetManager = context.getAssets();
         InputStream inputStream = null;
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory factory =
+            DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = null;
         Document document = null;
-        try
-        {
+        try {
             inputStream = assetManager.open(str);
             builder = factory.newDocumentBuilder();
             document = builder.parse(inputStream);
 
             Element root = document.getDocumentElement();
             NodeList nList = root.getElementsByTagName("requirement");
-            treeList.add(new Tree<RequiredItem>());
-            for (int i = 0; i < nList.getLength(); i++)
-            {
+            for (int i = 0; i < nList.getLength(); i++) {
                 Tree<RequiredItem> tree = new Tree<RequiredItem>();
                 org.w3c.dom.Node item = nList.item(i);
                 Element element = (Element)item;
                 String name = element.getAttribute("name");
-                int total = Integer.parseInt(element.getAttribute("total"));
-                Requirement requirement = new Requirement(name, total);
+                int total;
+                if (element.hasAttribute("total")) {
+                    total =
+                        Integer.parseInt(element
+                            .getAttribute("total"));
+                }
+                else {
+                    total = 0;
+                }
+                Requirement requirement =
+                    new Requirement(name, total);
                 tree.addNode(requirement);
 
-                NodeList cleList = element.getElementsByTagName("cle");
+                NodeList cleList =
+                    element.getElementsByTagName("cle");
                 addCle(cleList, tree, requirement);
 
-                NodeList courseList = element.getElementsByTagName("course");
+                NodeList courseList =
+                    element.getElementsByTagName("course");
                 addCourses(courseList, tree, requirement);
-                NodeList groupList = element.getElementsByTagName("group");
+                NodeList groupList =
+                    element.getElementsByTagName("group");
                 addGroup(groupList, tree, requirement);
                 treeList.add(tree);
-                treeList.add(new Tree<RequiredItem>());
             }
 
         }
-        catch (ParserConfigurationException e)
-        {
+        catch (ParserConfigurationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        catch (SAXException e)
-        {
+        catch (SAXException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        catch (IOException e)
-        {
+        catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
         Checksheet sheet = new Checksheet(treeList);
         // Generate fake data here
-/*        ArrayList<Tree> treelist = new ArrayList<Tree>();
-        Tree tree = new Tree();
-        Requirement req = new Requirement("CLE", null, "2");
-        tree.addNode(req);
-        RequiredCourse course =
-            new RequiredCourse("CS", "2114", "2114");
-        tree.addNode(course, req);
-        CourseGroup group = new CourseGroup(1);
-        RequiredCourse course2 =
-            new RequiredCourse("CS", "1234", "1234");
-        tree.addNode(group, req);
-        tree.addNode(course2, group);
-        RequiredCourse course3 =
-            new RequiredCourse("MATH", "1234", "1234");
-        tree.addNode(course3, group);
-        treelist.add(tree);
-
-        Tree treea = new Tree();
-        Requirement reqa = new Requirement("Stuff", null, "2");
-        treea.addNode(reqa);
-        RequiredCourse coursea =
-            new RequiredCourse("CS", "2114", "2114");
-        treea.addNode(coursea, reqa);
-        CourseGroup groupa = new CourseGroup(1);
-        RequiredCourse course2a =
-            new RequiredCourse("CS", "1234", "1234");
-        treea.addNode(groupa, reqa);
-        treea.addNode(course2a, groupa);
-        RequiredCourse course3a =
-            new RequiredCourse("MATH", "1234", "1234");
-        treea.addNode(course3a, groupa);
-        treelist.add(treea);
-
-        Checksheet sheet = new Checksheet(treelist);*/
+/*
+ * ArrayList<Tree> treelist = new ArrayList<Tree>(); Tree tree = new Tree();
+ * Requirement req = new Requirement("CLE", null, "2"); tree.addNode(req);
+ * RequiredCourse course = new RequiredCourse("CS", "2114", "2114");
+ * tree.addNode(course, req); CourseGroup group = new CourseGroup(1);
+ * RequiredCourse course2 = new RequiredCourse("CS", "1234", "1234");
+ * tree.addNode(group, req); tree.addNode(course2, group); RequiredCourse
+ * course3 = new RequiredCourse("MATH", "1234", "1234"); tree.addNode(course3,
+ * group); treelist.add(tree); Tree treea = new Tree(); Requirement reqa = new
+ * Requirement("Stuff", null, "2"); treea.addNode(reqa); RequiredCourse coursea
+ * = new RequiredCourse("CS", "2114", "2114"); treea.addNode(coursea, reqa);
+ * CourseGroup groupa = new CourseGroup(1); RequiredCourse course2a = new
+ * RequiredCourse("CS", "1234", "1234"); treea.addNode(groupa, reqa);
+ * treea.addNode(course2a, groupa); RequiredCourse course3a = new
+ * RequiredCourse("MATH", "1234", "1234"); treea.addNode(course3a, groupa);
+ * treelist.add(treea); Checksheet sheet = new Checksheet(treelist);
+ */
 
         return sheet;
     }
-
 
     // ----------------------------------------------------------
     /**
@@ -156,25 +143,24 @@ public class XMLHandler {
     public void addGroup(
         NodeList list,
         Tree<RequiredItem> tree,
-        RequiredItem parent)
-    {
-        for (int j = 0; j < list.getLength(); j++)
-        {
+        RequiredItem parent) {
+        for (int j = 0; j < list.getLength(); j++) {
             org.w3c.dom.Node groupItem = list.item(j);
             Element element = (Element)groupItem;
-            Integer total = Integer.parseInt(element.getAttribute("total"));
+            Integer total =
+                Integer.parseInt(element.getAttribute("total"));
             CourseGroup group = new CourseGroup(total);
             tree.addNode(group, parent);
-            NodeList courseList = element.getElementsByTagName("course");
+            NodeList courseList =
+                element.getElementsByTagName("course");
             addCourses(courseList, tree, group);
-            NodeList groupList = element.getElementsByTagName("group");
-            if (groupList.getLength() > 0)
-            {
-                addGroup(list, tree, group);
+            NodeList groupList =
+                element.getElementsByTagName("group");
+            if (groupList.getLength() > 0) {
+                addGroup(groupList, tree, group);
             }
         }
     }
-
 
     // ----------------------------------------------------------
     /**
@@ -190,19 +176,18 @@ public class XMLHandler {
     public void addCle(
         NodeList list,
         Tree<RequiredItem> tree,
-        RequiredItem parent)
-    {
-        for (int j = 0; j < list.getLength(); j++)
-        {
+        RequiredItem parent) {
+        for (int j = 0; j < list.getLength(); j++) {
             org.w3c.dom.Node cleItem = list.item(j);
             Element element = (Element)cleItem;
-            Integer total = Integer.parseInt(element.getAttribute("total"));
-            Integer area = Integer.parseInt(element.getAttribute("area"));
+            Integer total =
+                Integer.parseInt(element.getAttribute("total"));
+            Integer area =
+                Integer.parseInt(element.getAttribute("area"));
             Cle cle = new Cle(area, total);
             tree.addNode(cle, parent);
         }
     }
-
 
     // ----------------------------------------------------------
     /**
@@ -218,30 +203,30 @@ public class XMLHandler {
     public void addCourses(
         NodeList list,
         Tree<RequiredItem> tree,
-        RequiredItem parent)
-    {
-        for (int i = 0; i < list.getLength(); i++)
-        {
+        RequiredItem parent) {
+        for (int i = 0; i < list.getLength(); i++) {
             org.w3c.dom.Node courseItem = list.item(i);
             Element courseE = (Element)courseItem;
             String dep = courseE.getAttribute("department");
-            int num = Integer.parseInt(courseE.getAttribute("number"));
             String name = courseE.getAttribute("name");
-            if (name != "" || name != null)
-            {
+            String numStr = courseE.getAttribute("number");
+            if (dep.equals("")) {
+                // No department specified so it just has a name
                 RequiredCourse course = new RequiredCourse(name);
                 tree.addNode(course, parent);
             }
-            else if (num != 0)
-            {
-                RequiredCourse course = new RequiredCourse(dep, num, num);
+            else if (!numStr.equals("")) {
+                int num = Integer.parseInt(numStr);
+                RequiredCourse course =
+                    new RequiredCourse(dep, num, num);
                 tree.addNode(course, parent);
             }
-            else
-            {
-                int from = Integer.parseInt(courseE.getAttribute("from"));
+            else {
+                int from =
+                    Integer.parseInt(courseE.getAttribute("from"));
                 int to = Integer.parseInt(courseE.getAttribute("to"));
-                RequiredCourse course = new RequiredCourse(dep, from, to);
+                RequiredCourse course =
+                    new RequiredCourse(dep, from, to);
                 tree.addNode(course, parent);
             }
         }
