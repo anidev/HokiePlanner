@@ -12,7 +12,7 @@
         android:name="android.test.InstrumentationTestRunner"
         android:targetPackage="org.gorilla.hokieplanner.guerilla" >
     </instrumentation>
-
+    
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
