@@ -6,12 +6,14 @@
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="21"/>
+        android:targetSdkVersion="21" />
 
     <instrumentation
         android:name="android.test.InstrumentationTestRunner"
         android:targetPackage="org.gorilla.hokieplanner.guerilla" >
     </instrumentation>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"

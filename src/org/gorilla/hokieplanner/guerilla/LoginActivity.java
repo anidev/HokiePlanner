@@ -1,5 +1,7 @@
 package org.gorilla.hokieplanner.guerilla;
 
+import android.os.AsyncTask;
+import android.app.ProgressDialog;
 import com.vtaccess.exceptions.WrongLoginException;
 import com.vtaccess.Cas;
 import android.widget.CheckBox;
@@ -32,6 +34,11 @@ public class LoginActivity
      * Initialize the Auth object login
      */
     private Cas      login;
+
+    /**
+     * Store the pid while waiting for the login task to run
+     */
+    private char[]   pid;
 
     // --------------------------------------------------------
     /**
@@ -69,7 +76,7 @@ public class LoginActivity
     public void loginSubmit(View button) {
         login_pass_field =
             (EditText)findViewById(R.id.login_pass_field);
-        char[] pid = getAndSavePID().toCharArray();
+        pid = getAndSavePID().toCharArray();
         char[] password =
             (login_pass_field).getText().toString().toCharArray();
 
@@ -80,14 +87,17 @@ public class LoginActivity
             login_pass_field.setError("Password should not be blank");
         }
         else {
-            try {
-                login = new Cas(pid, password);
-            }
-            catch (WrongLoginException e) {
-                login = null;
-            }
+            ProgressDialog progress = new ProgressDialog(this);
+            progress.setMessage("Logging in...");
+            progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progress.setCancelable(false);
+            new LoginTask(pid, password, progress)
+                .execute(new Void[0]);
         }
+    }
 
+    private void loginTaskFinished(Cas auth) {
+        login = auth;
         if (login != null && login.isValidLoginInfo()
             && login.isActive()) {
             Prefs.setAuth(login);
@@ -153,5 +163,63 @@ public class LoginActivity
      */
     private EditText getPIDField() {
         return (EditText)findViewById(R.id.login_pid_field);
+    }
+
+    /**
+     * Uses VTAccess API to connect to network and attempt to login
+     *
+     * @author Anirudh Bagde (anibagde)
+     * @author Weyland Chiang (chiangw)
+     * @author Sayan Ekambarapu (sayan96)
+     * @version Nov 9, 2014
+     */
+    private class LoginTask
+        extends AsyncTask<Void, Void, Cas> {
+        private char[] username;
+        private char[] password;
+        ProgressDialog progress;
+
+        /**
+         * Construct the task with the given username, password, and progress
+         * dialog
+         *
+         * @param username
+         *            Username
+         * @param password
+         *            Password
+         * @param progress
+         *            Progress dialog to show
+         */
+        public LoginTask(
+            char[] username,
+            char[] password,
+            ProgressDialog progress) {
+            this.username = username;
+            this.password = password;
+            this.progress = progress;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            progress.show();
+        }
+
+        @Override
+        protected Cas doInBackground(Void... params) {
+            Cas auth;
+            try {
+                auth = new Cas(username, password);
+            }
+            catch (WrongLoginException e) {
+                auth = null;
+            }
+            return auth;
+        }
+
+        @Override
+        protected void onPostExecute(Cas result) {
+            progress.dismiss();
+            loginTaskFinished(result);
+        }
     }
 }
