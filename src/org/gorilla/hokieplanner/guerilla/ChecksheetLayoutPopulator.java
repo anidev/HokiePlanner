@@ -3,6 +3,7 @@ package org.gorilla.hokieplanner.guerilla;
 import android.widget.Button;
 import java.util.Locale;
 import java.util.ArrayList;
+import android.annotation.SuppressLint;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.view.LayoutInflater;
  * @author Sayan Ekambarapu (sayan96)
  * @version Nov 9, 2014
  */
+@SuppressLint("InflateParams")
 public class ChecksheetLayoutPopulator {
     private View           rootView;
     private LayoutInflater inflater;
@@ -42,15 +44,20 @@ public class ChecksheetLayoutPopulator {
         Checksheet checksheet = Prefs.getChecksheet();
         ViewGroup layout =
             (ViewGroup)rootView.findViewById(R.id.checksheet_layout);
+
         for (Tree<RequiredItem> tree : checksheet.getList()) {
+            // Create a new group in the main fragment layout to contain all the
+            // items in this requirement
             ViewGroup groupLayout =
                 (ViewGroup)inflater.inflate(
                     R.layout.checksheet_status_group,
                     null);
+            // Get root node of the tree, which should be a Requirement object
             Requirement req = (Requirement)tree.getFirst();
             ((TextView)groupLayout
                 .findViewById(R.id.group_title_label)).setText(req
                 .getName() + ", Total: " + req.getTotal());
+            // CLE items are displayed differently in the GUI
             if (req.getName().toLowerCase(Locale.getDefault())
                 .equals("cle")) {
                 addCLEs(tree);
@@ -59,6 +66,17 @@ public class ChecksheetLayoutPopulator {
                 addItems(tree, groupLayout, req);
             }
             layout.addView(groupLayout);
+            // Set the bottom margin for this group layout, so it is more
+            // distinct from the other requirement groups
+            ViewGroup.MarginLayoutParams p =
+                (ViewGroup.MarginLayoutParams)groupLayout
+                    .getLayoutParams();
+            p.setMargins(
+                p.leftMargin,
+                p.topMargin,
+                p.rightMargin,
+                (int)Prefs.getApplicationContext().getResources()
+                    .getDimension(R.dimen.checksheet_group_margin));
         }
     }
 
@@ -88,25 +106,39 @@ public class ChecksheetLayoutPopulator {
      * @param parent
      *            The parent object in the tree
      */
-    private void addItems(Tree<RequiredItem> tree, ViewGroup root, Object parent) {
+    private void addItems(
+        Tree<RequiredItem> tree,
+        ViewGroup root,
+        RequiredItem parent) {
         ArrayList<Node<RequiredItem>> nodes =
             tree.getNodes().get(parent).getChildren();
+
         for (Node<RequiredItem> node : nodes) {
             RequiredItem item = node.getData();
+            // A requirement or course group can contain both courses and groups
+            // of courses. This method will recursively call itself to add items
+            // within a course group.
             if (item instanceof RequiredCourse) {
                 RequiredCourse course = (RequiredCourse)item;
                 final String id = CourseCache.getCourseID(course);
                 if (id == null) {
                     return;
                 }
+                // Create the widget that represents this course in the GUI
                 View courseWidget =
                     inflater.inflate(R.layout.course_info, null);
                 ((TextView)courseWidget
                     .findViewById(R.id.course_name))
                     .setText(getCourseName(course));
+                // This button changes the state of the course between not done,
+                // in progress, and done
                 Button stateButton =
                     (Button)courseWidget
                         .findViewById(R.id.course_state_button);
+                // Set the button's state based on what the state of this
+                // particular course is, according to the course cache. The
+                // cached state will have been loaded from storage, or set to
+                // the default "not done".
                 CourseCache.CourseData data =
                     Prefs.getCourseCache().getData(id);
                 stateButton.setText(data.getState().toString());
@@ -115,6 +147,7 @@ public class ChecksheetLayoutPopulator {
                         @Override
                         public void onClick(View v) {
                             Button button = (Button)v;
+                            // Get the cached data again in case it was changed
                             @SuppressWarnings("hiding")
                             CourseCache.CourseData data =
                                 Prefs.getCourseCache().getData(id);
@@ -140,6 +173,8 @@ public class ChecksheetLayoutPopulator {
                 root.addView(courseWidget);
             }
             else if (item instanceof CourseGroup) {
+                // Call addItem with this a new group layout as the root view
+                // and this group item as the parent node of the subtree
                 CourseGroup group = (CourseGroup)item;
                 ViewGroup groupLayout =
                     (ViewGroup)inflater.inflate(
@@ -161,9 +196,12 @@ public class ChecksheetLayoutPopulator {
      * @return Course name to display to user
      */
     private String getCourseName(RequiredCourse course) {
+        // Some course objects may already have a name specified in the XML file
         if (course.getName() != null && !course.getName().equals("")) {
             return course.getName();
         }
+        // Next, check the course cache to see if it has name, either from
+        // storage or from an earlier network cache
         CourseCache cache = Prefs.getCourseCache();
         String id = CourseCache.getCourseID(course);
         if (id == null) {
@@ -174,14 +212,18 @@ public class ChecksheetLayoutPopulator {
             return data.getName();
         }
         else {
+            // Finally, if the cache has nothing, construct an acceptable string
+            // to display to the user using the course's department and number
             int from = course.getFrom();
             int to = course.getTo();
-            if (from == to) {
-                return course.getDepartment() + " " + from;
+            String name =
+                course.getDepartment().toUpperCase(
+                    Locale.getDefault())
+                    + " " + from;
+            if (from != to) {
+                name += "-" + to;
             }
-            else {
-                return course.getDepartment() + " " + from + "-" + to;
-            }
+            return name;
         }
     }
 
