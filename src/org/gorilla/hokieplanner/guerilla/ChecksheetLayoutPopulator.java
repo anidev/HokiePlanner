@@ -42,7 +42,7 @@ public class ChecksheetLayoutPopulator {
         Checksheet checksheet = Prefs.getChecksheet();
         ViewGroup layout =
             (ViewGroup)rootView.findViewById(R.id.checksheet_layout);
-        for (Tree tree : checksheet.getList()) {
+        for (Tree<RequiredItem> tree : checksheet.getList()) {
             ViewGroup groupLayout =
                 (ViewGroup)inflater.inflate(
                     R.layout.checksheet_status_group,
@@ -68,11 +68,10 @@ public class ChecksheetLayoutPopulator {
      * @param tree
      *            The tree for the CLE requirement
      */
-    private void addCLEs(Tree tree) {
-        ArrayList<Node> nodes =
-            ((Node)tree.getNodes().get(tree.getFirst()))
-                .getChildren();
-        for (Node node : nodes) {
+    private void addCLEs(Tree<RequiredItem> tree) {
+        ArrayList<Node<RequiredItem>> nodes =
+            tree.getNodes().get(tree.getFirst()).getChildren();
+        for (Node<RequiredItem> node : nodes) {
             // TODO CLE gui stuff
         }
     }
@@ -89,11 +88,11 @@ public class ChecksheetLayoutPopulator {
      * @param parent
      *            The parent object in the tree
      */
-    private void addItems(Tree tree, ViewGroup root, Object parent) {
-        ArrayList<Node> nodes =
-            ((Node)tree.getNodes().get(parent)).getChildren();
-        for (Node node : nodes) {
-            RequiredItem item = (RequiredItem)node.getData();
+    private void addItems(Tree<RequiredItem> tree, ViewGroup root, Object parent) {
+        ArrayList<Node<RequiredItem>> nodes =
+            tree.getNodes().get(parent).getChildren();
+        for (Node<RequiredItem> node : nodes) {
+            RequiredItem item = node.getData();
             if (item instanceof RequiredCourse) {
                 RequiredCourse course = (RequiredCourse)item;
                 final String id = CourseCache.getCourseID(course);
@@ -116,6 +115,7 @@ public class ChecksheetLayoutPopulator {
                         @Override
                         public void onClick(View v) {
                             Button button = (Button)v;
+                            @SuppressWarnings("hiding")
                             CourseCache.CourseData data =
                                 Prefs.getCourseCache().getData(id);
                             RequirementState newState =

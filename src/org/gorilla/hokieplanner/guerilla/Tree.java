@@ -12,6 +12,8 @@ import java.util.Iterator;
  * @author Weyland Chiang (chiangw)
  * @author Sayan Ekambarapu (sayan96)
  * @version December 1, 2014
+ * @param <E>
+ *            The type of data this Node stores
  */
 public class Tree<E>
 {
@@ -122,11 +124,11 @@ public class Tree<E>
      * @author Weyland Chiang (chiangw)
      * @author Sayan Ekambarapu (sayan96)
      * @version December 1, 2014
-     * @param <E> Generic Data Type
+     * @param <K> Generic Data Type
      */
-    public class TreeIterator<E> implements Iterator<Node<E>>
+    public class TreeIterator<K> implements Iterator<Node<K>>
     {
-        private LinkedList<Node<E>> list;
+        private LinkedList<Node<K>> list;
 
 
         // ----------------------------------------------------------
@@ -136,9 +138,9 @@ public class Tree<E>
          * @param tree Tree to make an iterator for
          * @param data First data entry to use
          */
-        public TreeIterator(HashMap<E, Node<E>> tree, E data)
+        public TreeIterator(HashMap<K, Node<K>> tree, K data)
         {
-            list = new LinkedList<Node<E>>();
+            list = new LinkedList<Node<K>>();
             if (tree.containsKey(data))
             {
                 this.genList(tree, data);
@@ -149,10 +151,10 @@ public class Tree<E>
         /**
          * This will recursively go and generate the list
          */
-        private void genList(HashMap<E, Node<E>> tree, E data)
+        private void genList(HashMap<K, Node<K>> tree, K data)
         {
             list.add(tree.get(data));
-            ArrayList<Node<E>> children = tree.get(data).getChildren();
+            ArrayList<Node<K>> children = tree.get(data).getChildren();
             for (int i = 0; i < children.size(); i++)
             {
                 this.genList(tree, children.get(i).getData());
@@ -165,9 +167,9 @@ public class Tree<E>
          *
          * @return Iterator<Node<E>> Iterator type
          */
-        public Iterator<Node<E>> iterator()
+        public Iterator<Node<K>> iterator()
         {
-            Iterator<Node<E>> iter = new Iterator<Node<E>>() {
+            Iterator<Node<K>> iter = new Iterator<Node<K>>() {
                 // ----------------------------------------------------------
                 /**
                  * Returns whether or not there is another item
@@ -187,7 +189,7 @@ public class Tree<E>
                  *
                  * @return Node Next node in the iterator
                  */
-                public Node<E> next()
+                public Node<K> next()
                 {
                     return list.poll();
                 }
@@ -225,7 +227,7 @@ public class Tree<E>
          *
          * @return Node Next node in the iterator
          */
-        public Node<E> next()
+        public Node<K> next()
         {
             return list.poll();
         }

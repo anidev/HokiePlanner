@@ -35,11 +35,6 @@ public class LoginActivity
      */
     private Cas      login;
 
-    /**
-     * Store the pid while waiting for the login task to run
-     */
-    private char[]   pid;
-
     // --------------------------------------------------------
     /**
      * Once this activity is created, sets the content view to the
@@ -76,7 +71,7 @@ public class LoginActivity
     public void loginSubmit(View button) {
         login_pass_field =
             (EditText)findViewById(R.id.login_pass_field);
-        pid = getAndSavePID().toCharArray();
+        char[] pid = getAndSavePID().toCharArray();
         char[] password =
             (login_pass_field).getText().toString().toCharArray();
 
@@ -101,7 +96,7 @@ public class LoginActivity
         if (login != null && login.isValidLoginInfo()
             && login.isActive()) {
             Prefs.setAuth(login);
-            startPlannerActivity(pid.toString());
+            startPlannerActivity(getAndSavePID());
         }
         else {
             login_pass_field.setError("Login Failed");
