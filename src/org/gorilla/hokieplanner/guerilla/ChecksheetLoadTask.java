@@ -1,6 +1,5 @@
 package org.gorilla.hokieplanner.guerilla;
 
-import android.content.Context;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 
@@ -15,20 +14,16 @@ import android.os.AsyncTask;
  */
 public class ChecksheetLoadTask
     extends AsyncTask<Void, Void, Void> {
-    private Context        context;
     private ProgressDialog progress;
 
     /**
      * Construct the load task with a given Activity context and a progress
      * dialog to display
      *
-     * @param context
-     *            Context of calling Activity
      * @param progress
      *            ProgressDialog that will we displayed when the task starts
      */
-    public ChecksheetLoadTask(Context context, ProgressDialog progress) {
-        this.context = context.getApplicationContext();
+    public ChecksheetLoadTask(ProgressDialog progress) {
         this.progress = progress;
     }
 
@@ -40,14 +35,17 @@ public class ChecksheetLoadTask
         String filename =
             AvailableChecksheets.valueOf(
                 Prefs.getSelectedChecksheet()).getFile();
-        XMLHandler handler = new XMLHandler(context);
+        XMLHandler handler =
+            new XMLHandler(Prefs.getApplicationContext());
         Checksheet checksheet = handler.parse(filename);
         Prefs.setChecksheet(checksheet);
         CourseCache cache = new CourseCache();
         // TODO download course cache
         Prefs.setCourseCache(cache);
+        // The following is to simulate waiting to download course info from the
+        // timetable online
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         }
         catch (Exception e) {
             // asdf

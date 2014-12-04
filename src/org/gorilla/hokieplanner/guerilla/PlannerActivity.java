@@ -188,7 +188,7 @@ public class PlannerActivity
         progress.setMessage("Loading checksheet data...");
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progress.setCancelable(false);
-        new ChecksheetLoadTask(this, progress).execute(new Void[0]);
+        new ChecksheetLoadTask(progress).execute(new Void[0]);
     }
 
     /**
