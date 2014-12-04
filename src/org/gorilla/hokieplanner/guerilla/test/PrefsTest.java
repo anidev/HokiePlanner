@@ -7,7 +7,8 @@ import android.test.AndroidTestCase;
 
 /**
  * Test the methods in Prefs to make sure they save data correctly and return
- * valid values
+ * valid values. NOTE: Running this test will clear all stored preferences for
+ * the app.
  *
  * @author Anirudh Bagde (anibagde)
  * @author Weyland Chiang (chiangw)
