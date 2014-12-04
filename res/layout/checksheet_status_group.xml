@@ -3,10 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingBottom="20dp"
-    android:orientation="vertical" >
+    android:paddingRight="@dimen/activity_horizontal_margin" >
 
     <TextView
         android:id="@+id/group_title_label"
@@ -21,10 +20,8 @@
         android:id="@+id/group_title_border"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp"
         android:background="@android:color/holo_blue_light" />
-    
-    
 
 </LinearLayout>

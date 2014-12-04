@@ -176,7 +176,7 @@ public class ChecksheetLayoutPopulator {
         else {
             int from = course.getFrom();
             int to = course.getTo();
-            if (from==to) {
+            if (from == to) {
                 return course.getDepartment() + " " + from;
             }
             else {
