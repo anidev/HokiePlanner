@@ -28,7 +28,7 @@ public class ChecksheetLoadTask
      *            ProgressDialog that will we displayed when the task starts
      */
     public ChecksheetLoadTask(Context context, ProgressDialog progress) {
-        this.context = context;
+        this.context = context.getApplicationContext();
         this.progress = progress;
     }
 
@@ -57,6 +57,5 @@ public class ChecksheetLoadTask
 
     protected void onPostExecute(Void result) {
         progress.dismiss();
-        context = null; // Avoid context leak
     }
 }

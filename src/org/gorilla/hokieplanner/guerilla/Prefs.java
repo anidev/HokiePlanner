@@ -27,7 +27,7 @@ public class Prefs {
      */
     public static void initialize(Context context) {
         prefs =
-            context.getSharedPreferences(
+            context.getApplicationContext().getSharedPreferences(
                 "org.gorilla.hokieplanner.guerilla.PREFERENCES",
                 Context.MODE_PRIVATE);
     }

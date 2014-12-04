@@ -32,7 +32,7 @@ public class XMLHandler {
      * @param context
      */
     public XMLHandler(Context context) {
-        this.context = context;
+        this.context = context.getApplicationContext();
     }
 
     // ----------------------------------------------------------
