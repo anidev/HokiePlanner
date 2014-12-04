@@ -14,6 +14,7 @@ import android.content.SharedPreferences;
  * @version Nov 9, 2014
  */
 public class Prefs {
+    private static Context           appContext;
     private static SharedPreferences prefs;
     private static CourseCache       courseCache;
     private static Checksheet        checksheet;
@@ -26,10 +27,19 @@ public class Prefs {
      *            Any activity context
      */
     public static void initialize(Context context) {
+        appContext = context.getApplicationContext();
         prefs =
-            context.getApplicationContext().getSharedPreferences(
+            appContext.getSharedPreferences(
                 "org.gorilla.hokieplanner.guerilla.PREFERENCES",
                 Context.MODE_PRIVATE);
+    }
+
+    /**
+     * Return the application context. This cannot be used for anything UI-related.
+     * @return Application context
+     */
+    public static Context getApplicationContext() {
+        return appContext;
     }
 
     /**
