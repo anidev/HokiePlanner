@@ -28,7 +28,7 @@ public class XMLHandlerTest extends AndroidTestCase
     public void testParse()
     {
 
-       Checksheet sheet = handle.parse("Checksheet-cs-2017.xml");
-        assertEquals(4, sheet.size());
+       Checksheet sheet = handle.parse("Checksheet-CS-2017.xml");
+        assertEquals(12, sheet.size());
     }
 }
