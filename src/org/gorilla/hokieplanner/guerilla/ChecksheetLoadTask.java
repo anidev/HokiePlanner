@@ -32,13 +32,18 @@ public class ChecksheetLoadTask
     }
 
     protected Void doInBackground(Void... unused) {
+        // Get the enum from the value stored in prefs and get the filename from
+        // that enum
         String filename =
             AvailableChecksheets.valueOf(
                 Prefs.getSelectedChecksheet()).getFile();
         XMLHandler handler =
             new XMLHandler(Prefs.getApplicationContext());
+        // Parse the checksheet and make it globally available
         Checksheet checksheet = handler.parse(filename);
         Prefs.setChecksheet(checksheet);
+        // Connect to the online timetable (using Cas auth if the user is logged
+        // in) and get course info
         CourseCache cache = new CourseCache();
         // TODO download course cache
         Prefs.setCourseCache(cache);

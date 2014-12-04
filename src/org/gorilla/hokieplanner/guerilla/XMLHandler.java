@@ -48,8 +48,10 @@ public class XMLHandler {
         ArrayList<Tree<RequiredItem>> treeList =
             new ArrayList<Tree<RequiredItem>>();
 
+        // Use the Android Asset Manager to access the packaged XML file
         AssetManager assetManager = context.getAssets();
         InputStream inputStream = null;
+        // Use Java built-in XML parser and W3C document object model
         DocumentBuilderFactory factory =
             DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = null;
@@ -61,6 +63,7 @@ public class XMLHandler {
 
             Element root = document.getDocumentElement();
             NodeList nList = root.getElementsByTagName("requirement");
+            // Process each requirement
             for (int i = 0; i < nList.getLength(); i++) {
                 Tree<RequiredItem> tree = new Tree<RequiredItem>();
                 org.w3c.dom.Node item = nList.item(i);
@@ -107,7 +110,9 @@ public class XMLHandler {
         }
 
         Checksheet sheet = new Checksheet(treeList);
-        // Generate fake data here
+
+        // Generate fake data here, this was used for testing earlier before the
+        // parser was completely finished
 /*
  * ArrayList<Tree> treelist = new ArrayList<Tree>(); Tree tree = new Tree();
  * Requirement req = new Requirement("CLE", null, "2"); tree.addNode(req);

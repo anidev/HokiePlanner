@@ -71,17 +71,20 @@ public class LoginActivity
     public void loginSubmit(View button) {
         login_pass_field =
             (EditText)findViewById(R.id.login_pass_field);
+        // Convert PID and password to char array because it is more secure and
+        // the Cas class wants it that way
         char[] pid = getAndSavePID().toCharArray();
         char[] password =
             (login_pass_field).getText().toString().toCharArray();
-
-        if (getPIDField().getText().toString().isEmpty()) {
+        // Check validity of specified PID and password
+        if (pid.length == 0) {
             getPIDField().setError("Username should not be blank");
         }
-        else if (login_pass_field.toString().isEmpty()) {
+        else if (password.length == 0) {
             login_pass_field.setError("Password should not be blank");
         }
         else {
+            // Display a waiting dialog and attempt login on a separate thread
             ProgressDialog progress = new ProgressDialog(this);
             progress.setMessage("Logging in...");
             progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);

@@ -51,6 +51,7 @@ public class PlannerActivity
         super.onCreate(savedInstanceState);
         Prefs.initialize(this);
 
+        // Force user to select a checksheet if one hasn't already been
         if (Prefs.getSelectedChecksheet() == null) {
             Intent intent =
                 new Intent(this, MajorPickerActivity.class);
@@ -61,11 +62,15 @@ public class PlannerActivity
 
         setContentView(R.layout.activity_planner);
 
+        // Set up the navigation drawer
+        // FIXME: This uses the old (pre-Material design) navigation drawer
+        // system, so some related methods and classes may be deprecated until
+        // we figure out how to use navigation drawers with Material design,
+        // which appcompat_v7 is forcing us to use.
         navigationDrawerFragment =
             (NavigationDrawerFragment)getSupportFragmentManager()
                 .findFragmentById(R.id.main_navdrawer);
         title = getTitle();
-
         // Set up the drawerLayout.
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         navigationDrawerFragment.setUp(
@@ -76,6 +81,8 @@ public class PlannerActivity
     @Override
     protected void onStart() {
         super.onStart();
+        // Make sure the checksheet XML and course cache are loaded before
+        // allowing the user to do anything
         loadCourseInfo();
     }
 
@@ -87,7 +94,7 @@ public class PlannerActivity
      *            Position in the drawer that the user selected
      */
     public void onNavigationDrawerItemSelected(int position) {
-        // update the main content by replacing fragments
+        // Update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager
             .beginTransaction()
@@ -136,6 +143,11 @@ public class PlannerActivity
      */
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
+        if (actionBar == null) {
+            // Sometimes it is null? No idea why but it causes crashes sometimes
+            // so do nothing if it null
+            return;
+        }
         actionBar
             .setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
@@ -145,7 +157,6 @@ public class PlannerActivity
     /**
      * Close navigation drawerLayout on back pressed
      */
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(Gravity.START)) {
@@ -184,6 +195,9 @@ public class PlannerActivity
      * Load checksheet XML and download course cache
      */
     private void loadCourseInfo() {
+        // Open a wait dialog so the user doesn't mess around with the app while
+        // stuff is being loaded. This may take some time since it requires
+        // network communication.
         ProgressDialog progress = new ProgressDialog(this);
         progress.setMessage("Loading checksheet data...");
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -249,6 +263,8 @@ public class PlannerActivity
             }
             View rootView =
                 inflater.inflate(layoutId, container, false);
+            // The fragments need to be dynamically filled with content, so take
+            // care of that here with helper methods
             if (layoutId == R.layout.fragment_welcome) {
                 populateWelcomeFragment(rootView);
             }
@@ -266,19 +282,24 @@ public class PlannerActivity
          *            The view that represents the welcome fragment
          */
         private void populateWelcomeFragment(View rootView) {
+            // Display current selected major/year combo
             TextView majorValue =
                 (TextView)rootView
                     .findViewById(R.id.selected_major_value);
             majorValue.setText(AvailableChecksheets.valueOf(
                 Prefs.getSelectedChecksheet()).toString());
+
             Bundle extras = getActivity().getIntent().getExtras();
             String pid =
                 (extras != null ? extras.getString("pid") : null);
+            // Modify login button text depending on whether user is logged in
+            // or not
             int actionText =
                 (pid != null ? R.string.logout_text
                     : R.string.login_text);
             ((Button)rootView.findViewById(R.id.login_logout_btn))
                 .setText(actionText);
+            // Display VT email address if currently logged in
             String pidText = (pid != null ? pid + "@vt.edu" : "");
             ((TextView)rootView.findViewById(R.id.welcome_name_label))
                 .setText(pidText);
@@ -298,6 +319,7 @@ public class PlannerActivity
         private void populateChecksheet(
             View rootView,
             LayoutInflater inflater) {
+            // Too much stuff to do here so everything is done by a helper class
             new ChecksheetLayoutPopulator(rootView, inflater)
                 .populate();
         }

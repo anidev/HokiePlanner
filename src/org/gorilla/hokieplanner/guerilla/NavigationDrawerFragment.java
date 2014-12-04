@@ -21,6 +21,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+// NOTE: This class was almost entirely auto-generated
+
 /**
  * Fragment used for managing interactions for and presentation of a navigation
  * drawer. See the <a href=

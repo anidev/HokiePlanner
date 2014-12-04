@@ -22,6 +22,7 @@ public class MajorPickerActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Populate the list using values from the enum
         setListAdapter(new ArrayAdapter<AvailableChecksheets>(
             this,
             android.R.layout.simple_list_item_1,
@@ -35,7 +36,10 @@ public class MajorPickerActivity
         View v,
         int position,
         long id) {
-        AvailableChecksheets checksheet = AvailableChecksheets.values()[position];
+        // Save the selected checksheet to a global location and let
+        // PlannerActivity take over
+        AvailableChecksheets checksheet =
+            AvailableChecksheets.values()[position];
         Prefs.setSelectedChecksheet(checksheet.name());
         Intent intent = new Intent(this, PlannerActivity.class);
         startActivity(intent);

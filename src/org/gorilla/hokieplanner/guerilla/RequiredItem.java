@@ -12,5 +12,5 @@ package org.gorilla.hokieplanner.guerilla;
  */
 public abstract class RequiredItem
 {
- //purposefully left empty
+    // purposefully left empty
 }
