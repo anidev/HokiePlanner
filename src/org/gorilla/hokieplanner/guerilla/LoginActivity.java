@@ -89,8 +89,8 @@ public class LoginActivity
             progress.setMessage("Logging in...");
             progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progress.setCancelable(false);
-            new LoginTask(pid, password, progress)
-                .execute(new Void[0]);
+            new LoginTask(pid, password, getCacheDir()
+                .getAbsolutePath(), progress).execute(new Void[0]);
         }
     }
 
@@ -175,6 +175,7 @@ public class LoginActivity
         extends AsyncTask<Void, Void, Cas> {
         private char[] username;
         private char[] password;
+        private String sslDir;
         ProgressDialog progress;
 
         /**
@@ -185,15 +186,20 @@ public class LoginActivity
          *            Username
          * @param password
          *            Password
+         * @param sslDir
+         *            Directory to store the SSL certs needed by VTAccess for
+         *            performing authentication
          * @param progress
          *            Progress dialog to show
          */
         public LoginTask(
             char[] username,
             char[] password,
+            String sslDir,
             ProgressDialog progress) {
             this.username = username;
             this.password = password;
+            this.sslDir = sslDir;
             this.progress = progress;
         }
 
@@ -206,7 +212,7 @@ public class LoginActivity
         protected Cas doInBackground(Void... params) {
             Cas auth;
             try {
-                auth = new Cas(username, password);
+                auth = new Cas(username, password, sslDir);
             }
             catch (WrongLoginException e) {
                 auth = null;
