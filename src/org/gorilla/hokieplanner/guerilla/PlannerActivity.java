@@ -1,18 +1,20 @@
 package org.gorilla.hokieplanner.guerilla;
 
+import android.content.res.Configuration;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.app.ProgressDialog;
 import android.widget.Button;
 import android.widget.TextView;
 import android.content.Intent;
 import android.view.Gravity;
 import org.gorilla.hokieplanner.guerilla.R;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +47,7 @@ public class PlannerActivity
     private CharSequence             title;
 
     private DrawerLayout             drawerLayout;
+    private ActionBarDrawerToggle    mDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,18 @@ public class PlannerActivity
 
         setContentView(R.layout.activity_planner);
 
+        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        mDrawerToggle =
+            new ActionBarDrawerToggle(
+                this,
+                drawerLayout,
+                toolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
+        drawerLayout.setDrawerListener(mDrawerToggle);
+
         // Set up the navigation drawer
         // FIXME: This uses the old (pre-Material design) navigation drawer
         // system, so some related methods and classes may be deprecated until
@@ -70,12 +85,11 @@ public class PlannerActivity
         navigationDrawerFragment =
             (NavigationDrawerFragment)getSupportFragmentManager()
                 .findFragmentById(R.id.main_navdrawer);
-        title = getTitle();
-        // Set up the drawerLayout.
-        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        title = getTitle(); // Set up the
         navigationDrawerFragment.setUp(
             R.id.main_navdrawer,
             drawerLayout);
+
     }
 
     @Override
@@ -84,6 +98,31 @@ public class PlannerActivity
         // Make sure the checksheet XML and course cache are loaded before
         // allowing the user to do anything
         loadCourseInfo();
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    /**
+     * Close navigation drawerLayout on back pressed
+     */
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(Gravity.START)) {
+            drawerLayout.closeDrawer(Gravity.START);
+        }
+        else {
+            super.onBackPressed();
+        }
     }
 
     /**
@@ -109,9 +148,17 @@ public class PlannerActivity
      * button at the bottom of the navigation drawer. It will set the saved PID
      * to null and replace the current activity with the login activity.
      */
-    public void resetLogin() {
+    public void resetLogin(View source) {
         Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+        ActivityOptionsCompat options =
+            ActivityOptionsCompat.makeScaleUpAnimation(
+                source,
+                0,
+                0,
+                0,
+                0);
+        ActivityCompat
+            .startActivity(this, intent, options.toBundle());
         finish();
     }
 
@@ -142,29 +189,13 @@ public class PlannerActivity
      * drawer, if it was changed
      */
     public void restoreActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar == null) {
-            // Sometimes it is null? No idea why but it causes crashes sometimes
-            // so do nothing if it null
-            return;
-        }
-        actionBar
-            .setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(title);
-    }
-
-    /**
-     * Close navigation drawerLayout on back pressed
-     */
-    @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(Gravity.START)) {
-            drawerLayout.closeDrawer(Gravity.START);
-        }
-        else {
-            super.onBackPressed();
-        }
+/*
+ * ActionBar actionBar = getSupportActionBar(); if (actionBar == null) { //
+ * Sometimes it is null? No idea why but it causes crashes sometimes // so do
+ * nothing if it null return; } actionBar
+ * .setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+ * actionBar.setDisplayShowTitleEnabled(true); actionBar.setTitle(title);
+ */
     }
 
     /**
@@ -176,7 +207,15 @@ public class PlannerActivity
      */
     public void changeCourse(View button) {
         Intent intent = new Intent(this, MajorPickerActivity.class);
-        startActivity(intent);
+        ActivityOptionsCompat options =
+            ActivityOptionsCompat.makeScaleUpAnimation(
+                button,
+                0,
+                0,
+                0,
+                0);
+        ActivityCompat
+            .startActivity(this, intent, options.toBundle());
         finish();
     }
 
@@ -188,7 +227,7 @@ public class PlannerActivity
      *            The button that was clicked to call this method
      */
     public void loginLogout(View button) {
-        resetLogin();
+        resetLogin(button);
     }
 
     /**
