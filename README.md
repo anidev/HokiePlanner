@@ -6,5 +6,5 @@ An app for fellow Hokies to keep track of your past, current, and future classes
 TO DO:
 Script to go login with CAS, interface with Hokie SPA, Grab all of the previous course information so we can parse and import it into the pre-existing courses.
 
-This app uses the VTAccess API created by Ethan (egaebel)
+This app uses the VTAccess API created by Ethan (egaebel), with minor modifications to make it work with the current VT CAS.
 URL: https://github.com/egaebel/VTAccess
