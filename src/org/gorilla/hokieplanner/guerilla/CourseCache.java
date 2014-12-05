@@ -129,6 +129,20 @@ public class CourseCache {
         }
 
         /**
+         * @param name the name to set
+         */
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        /**
+         * @param credits the credits to set
+         */
+        public void setCredits(int credits) {
+            this.credits = credits;
+        }
+
+        /**
          * Set the state for this course
          *
          * @param state

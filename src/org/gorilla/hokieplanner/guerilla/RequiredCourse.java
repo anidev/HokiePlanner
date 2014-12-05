@@ -99,6 +99,7 @@ public class RequiredCourse
         department = dep;
         from = begin;
         to = end;
+        name = "";
     }
 
 

@@ -1,5 +1,10 @@
 package org.gorilla.hokieplanner.guerilla;
 
+import java.util.Locale;
+import com.vtaccess.schedule.Course;
+import java.util.List;
+import com.vtaccess.CourseInfo;
+import com.vtaccess.Semester;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 
@@ -45,8 +50,9 @@ public class ChecksheetLoadTask
         // Connect to the online timetable (using Cas auth if the user is logged
         // in) and get course info
         CourseCache cache = new CourseCache();
-        // TODO download course cache
         Prefs.setCourseCache(cache);
+        // TODO Load cache data from storage such as requirement state
+        populateCourseCache(checksheet, cache);
         // The following is to simulate waiting to download course info from the
         // timetable online
         try {
@@ -60,5 +66,59 @@ public class ChecksheetLoadTask
 
     protected void onPostExecute(Void result) {
         progress.dismiss();
+    }
+
+    private void populateCourseCache(
+        Checksheet checksheet,
+        CourseCache cache) {
+        String semester = Semester.getCurrentSemesterCode();
+        for (Tree<RequiredItem> tree : checksheet.getList()) {
+            getInfoForCourses(tree, tree.getFirst(), cache, semester);
+        }
+    }
+
+    private void getInfoForCourses(
+        Tree<RequiredItem> tree,
+        RequiredItem parent,
+        CourseCache cache,
+        String semester) {
+        for (Node<RequiredItem> node : tree.getNodes().get(parent)
+            .getChildren()) {
+            RequiredItem item = node.getData();
+            if (item instanceof RequiredCourse) {
+                RequiredCourse course = (RequiredCourse)item;
+                // Skip if it's a range of courses or if it already has a name
+                if (course.getFrom() != course.getTo() || !course.getName().equals("")) {
+                    continue;
+                }
+                // Skip if for some reason there is no way to create an ID for
+// this course
+                final String id = CourseCache.getCourseID(course);
+                if (id == null) {
+                    continue;
+                }
+                // Skip if data for this course has already been loaded
+                CourseCache.CourseData data =
+                    Prefs.getCourseCache().getData(id);
+                if (!data.getName().equals("")
+                    || data.getCredits() != 0) {
+                    continue;
+                }
+                // Download info from online
+                List<Course> courses =
+                    CourseInfo.getCourses(
+                        semester,
+                        course.getDepartment().toUpperCase(
+                            Locale.getDefault()),
+                        "" + course.getFrom());
+                // Skip if no info found
+                if (courses == null || courses.size() == 0) {
+                    continue;
+                }
+                // Finally populate info
+                data.setCredits(courses.get(0).getCredits());
+                data.setName(courses.get(0).getName());
+            }
+        }
     }
 }
