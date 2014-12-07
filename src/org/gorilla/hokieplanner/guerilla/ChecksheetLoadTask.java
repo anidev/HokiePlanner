@@ -19,7 +19,9 @@ import android.os.AsyncTask;
  */
 public class ChecksheetLoadTask
     extends AsyncTask<Void, Void, Void> {
-    private ProgressDialog progress;
+    private static final String[] SEMESTERS = new String[] {
+        Semester.FALL, Semester.SPRING     };
+    private ProgressDialog        progress;
 
     /**
      * Construct the load task with a given Activity context and a progress
@@ -88,7 +90,8 @@ public class ChecksheetLoadTask
             if (item instanceof RequiredCourse) {
                 RequiredCourse course = (RequiredCourse)item;
                 // Skip if it's a range of courses or if it already has a name
-                if (course.getFrom() != course.getTo() || !course.getName().equals("")) {
+                if (course.getFrom() != course.getTo()
+                    || !course.getName().equals("")) {
                     continue;
                 }
                 // Skip if for some reason there is no way to create an ID for
@@ -104,13 +107,20 @@ public class ChecksheetLoadTask
                     || data.getCredits() != 0) {
                     continue;
                 }
-                // Download info from online
-                List<Course> courses =
-                    CourseInfo.getCourses(
-                        semester,
-                        course.getDepartment().toUpperCase(
-                            Locale.getDefault()),
-                        "" + course.getFrom());
+                // Download info from online, try fall semester then spring
+                // Possibly in future include winter, summer I, and summer II
+                List<Course> courses = null;
+                for (String sem : SEMESTERS) {
+                    courses =
+                        CourseInfo.getCourses(
+                            Semester.getSemesterCode(sem),
+                            course.getDepartment().toUpperCase(
+                                Locale.getDefault()),
+                            "" + course.getFrom());
+                    if (courses != null && courses.size() > 0) {
+                        break;
+                    }
+                }
                 // Skip if no info found
                 if (courses == null || courses.size() == 0) {
                     continue;
