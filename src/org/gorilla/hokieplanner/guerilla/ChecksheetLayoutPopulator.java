@@ -118,9 +118,12 @@ public class ChecksheetLayoutPopulator {
                         try {
                             int credits = Integer.parseInt(creditStr);
                             int newCredits = credits;
-                            if (v.getId() == R.id.credit_down_button && credits > 0) {
+                            if (v.getId() == R.id.credit_down_button
+                                && credits > 0) {
                                 newCredits = credits - 1;
-                            } else if(v.getId() == R.id.credit_up_button && credits < cle.getTotal()) {
+                            }
+                            else if (v.getId() == R.id.credit_up_button
+                                && credits < cle.getTotal()) {
                                 newCredits = credits + 1;
                             }
                             creditField.setText("" + newCredits);
