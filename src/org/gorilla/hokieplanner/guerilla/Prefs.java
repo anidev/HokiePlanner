@@ -115,7 +115,12 @@ public class Prefs {
      *            corresponds to the selected checksheet
      */
     public static void setSelectedChecksheet(String checksheetName) {
-        prefs.edit().putString("checksheet", checksheetName).commit();
+        String oldChecksheet = getSelectedChecksheet();
+        if(!checksheetName.equals(oldChecksheet)) {
+            prefs.edit().putString("checksheet", checksheetName).commit();
+            // Erase old saved checksheet object to force it to be reloaded
+            checksheet = null;
+        }
     }
 
     /**
