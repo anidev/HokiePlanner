@@ -76,17 +76,15 @@ public class ChecksheetLoadTask
     private void populateCourseCache(
         Checksheet checksheet,
         CourseCache cache) {
-        String semester = Semester.getCurrentSemesterCode();
         for (Tree<RequiredItem> tree : checksheet.getList()) {
-            getInfoForCourses(tree, tree.getFirst(), cache, semester);
+            getInfoForCourses(tree, tree.getFirst(), cache);
         }
     }
 
     private void getInfoForCourses(
         Tree<RequiredItem> tree,
         RequiredItem parent,
-        CourseCache cache,
-        String semester) {
+        CourseCache cache) {
         for (Node<RequiredItem> node : tree.getNodes().get(parent)
             .getChildren()) {
             RequiredItem item = node.getData();
@@ -131,6 +129,9 @@ public class ChecksheetLoadTask
                 // Finally populate info
                 data.setCredits(courses.get(0).getCredits());
                 data.setName(courses.get(0).getName());
+            }
+            else if (item instanceof CourseGroup) {
+                getInfoForCourses(tree, item, cache);
             }
         }
     }
