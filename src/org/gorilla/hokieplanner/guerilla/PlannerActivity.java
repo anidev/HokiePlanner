@@ -237,11 +237,13 @@ public class PlannerActivity
         // Open a wait dialog so the user doesn't mess around with the app while
         // stuff is being loaded. This may take some time since it requires
         // network communication.
-        ProgressDialog progress = new ProgressDialog(this);
-        progress.setMessage("Loading checksheet data...");
-        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progress.setCancelable(false);
-        new ChecksheetLoadTask(progress).execute(new Void[0]);
+        if (Prefs.getChecksheet() == null) {
+            ProgressDialog progress = new ProgressDialog(this);
+            progress.setMessage("Loading checksheet data...");
+            progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progress.setCancelable(false);
+            new ChecksheetLoadTask(progress).execute(new Void[0]);
+        }
     }
 
     /**
