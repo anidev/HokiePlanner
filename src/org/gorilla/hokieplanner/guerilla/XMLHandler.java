@@ -86,12 +86,8 @@ public class XMLHandler {
                     element.getElementsByTagName("cle");
                 addCle(cleList, tree, requirement);
 
-                NodeList courseList =
-                    element.getElementsByTagName("course");
-                addCourses(courseList, tree, requirement);
-                NodeList groupList =
-                    element.getElementsByTagName("group");
-                addGroup(groupList, tree, requirement);
+                NodeList childList = element.getChildNodes();
+                addItems(childList, tree, requirement);
                 treeList.add(tree);
             }
 
@@ -136,35 +132,55 @@ public class XMLHandler {
 
     // ----------------------------------------------------------
     /**
-     * A helper method to add groups from a list into the tree
+     * A helper method to add requirement items from a list into the tree. For
+     * each item, it decides whether it is a course or a group of courses and
+     * calls the appropriate method.
      *
      * @param list
-     *            a list of groups
+     *            a list of nodes
+     * @param tree
+     *            a tree to add to
+     * @param parent
+     *            the parent node to add the other nodes
+     */
+    public void addItems(
+        NodeList list,
+        Tree<RequiredItem> tree,
+        RequiredItem parent) {
+        for (int j = 0; j < list.getLength(); j++) {
+            org.w3c.dom.Node item = list.item(j);
+            String tagName = item.getNodeName();
+            if (tagName.equals("course")) {
+                addCourse(item, tree, parent);
+            }
+            else if (tagName.equals("group")) {
+                addGroup(item, tree, parent);
+            }
+        }
+    }
+
+    // ----------------------------------------------------------
+    /**
+     * A helper method to add a group into the tree
+     *
+     * @param groupItem
+     *            a group of courses
      * @param tree
      *            a tree to add to
      * @param parent
      *            the parent node to add other nodes
      */
     public void addGroup(
-        NodeList list,
+        org.w3c.dom.Node groupItem,
         Tree<RequiredItem> tree,
         RequiredItem parent) {
-        for (int j = 0; j < list.getLength(); j++) {
-            org.w3c.dom.Node groupItem = list.item(j);
-            Element element = (Element)groupItem;
-            Integer total =
-                Integer.parseInt(element.getAttribute("total"));
-            CourseGroup group = new CourseGroup(total);
-            tree.addNode(group, parent);
-            NodeList courseList =
-                element.getElementsByTagName("course");
-            addCourses(courseList, tree, group);
-            NodeList groupList =
-                element.getElementsByTagName("group");
-            if (groupList.getLength() > 0) {
-                addGroup(groupList, tree, group);
-            }
-        }
+        Element element = (Element)groupItem;
+        Integer total =
+            Integer.parseInt(element.getAttribute("total"));
+        CourseGroup group = new CourseGroup(total);
+        tree.addNode(group, parent);
+        NodeList childList = element.getChildNodes();
+        addItems(childList, tree, group);
     }
 
     // ----------------------------------------------------------
@@ -196,44 +212,38 @@ public class XMLHandler {
 
     // ----------------------------------------------------------
     /**
-     * A helper method to add courses from a list into the tree
+     * A helper method to add a course into the tree
      *
-     * @param list
-     *            a list of courses
+     * @param courseItem
+     *            the course to add
      * @param tree
      *            a tree to add to
      * @param parent
      *            the parent node to add other nodes
      */
-    public void addCourses(
-        NodeList list,
+    public void addCourse(
+        org.w3c.dom.Node courseItem,
         Tree<RequiredItem> tree,
         RequiredItem parent) {
-        for (int i = 0; i < list.getLength(); i++) {
-            org.w3c.dom.Node courseItem = list.item(i);
-            Element courseE = (Element)courseItem;
-            String dep = courseE.getAttribute("department");
-            String name = courseE.getAttribute("name");
-            String numStr = courseE.getAttribute("number");
-            if (dep.equals("")) {
-                // No department specified so it just has a name
-                RequiredCourse course = new RequiredCourse(name);
-                tree.addNode(course, parent);
-            }
-            else if (!numStr.equals("")) {
-                int num = Integer.parseInt(numStr);
-                RequiredCourse course =
-                    new RequiredCourse(dep, num, num);
-                tree.addNode(course, parent);
-            }
-            else {
-                int from =
-                    Integer.parseInt(courseE.getAttribute("from"));
-                int to = Integer.parseInt(courseE.getAttribute("to"));
-                RequiredCourse course =
-                    new RequiredCourse(dep, from, to);
-                tree.addNode(course, parent);
-            }
+        Element courseE = (Element)courseItem;
+        String dep = courseE.getAttribute("department");
+        String name = courseE.getAttribute("name");
+        String numStr = courseE.getAttribute("number");
+        if (dep.equals("")) {
+            // No department specified so it just has a name
+            RequiredCourse course = new RequiredCourse(name);
+            tree.addNode(course, parent);
+        }
+        else if (!numStr.equals("")) {
+            int num = Integer.parseInt(numStr);
+            RequiredCourse course = new RequiredCourse(dep, num, num);
+            tree.addNode(course, parent);
+        }
+        else {
+            int from = Integer.parseInt(courseE.getAttribute("from"));
+            int to = Integer.parseInt(courseE.getAttribute("to"));
+            RequiredCourse course = new RequiredCourse(dep, from, to);
+            tree.addNode(course, parent);
         }
     }
 }
