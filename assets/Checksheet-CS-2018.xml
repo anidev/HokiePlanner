@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <checksheet type="major" department="CS" year="2017">
-  <requirement type="cle">
+  <requirement name="cle">
     <cle area="2" total="6" />
     <cle area="3" total="6" />
     <cle area="6" total="1" />
