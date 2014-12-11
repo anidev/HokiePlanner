@@ -26,7 +26,8 @@ public class CourseCache {
      * cache. This is the department+number if available, else the course's
      * name, else null
      *
-     * @param course The course in question
+     * @param course
+     *            The course in question
      * @return The ID for this course
      */
     public static String getCourseID(RequiredCourse course) {
@@ -34,11 +35,13 @@ public class CourseCache {
         int numFrom = course.getFrom();
         int numTo = course.getTo();
         String name = course.getName();
-        if(dep!=null && !dep.equals("")) {
-            return dep+numFrom+"-"+numTo;
-        } else if(name!=null && !name.equals("")) {
+        if (dep != null && !dep.equals("")) {
+            return dep + numFrom + "-" + numTo;
+        }
+        else if (name != null && !name.equals("")) {
             return name;
-        } else {
+        }
+        else {
             return null;
         }
     }
@@ -67,7 +70,8 @@ public class CourseCache {
     public CourseData getData(String id) {
         CourseData data = map.get(id);
         if (data == null) {
-            data = new CourseData("", 0, RequirementState.NOTDONE);
+            data =
+                new CourseData(id, "", 0, Prefs.getCourseState(id));
             addData(id, data);
         }
         return data;
@@ -84,6 +88,7 @@ public class CourseCache {
      * @version Nov 9, 2014
      */
     public static class CourseData {
+        private String           id;
         private String           name;
         private int              credits;
         private RequirementState state;
@@ -91,6 +96,8 @@ public class CourseCache {
         /**
          * Construct a new CourseData object
          *
+         * @param id
+         *            ID for the course this data corresponds to
          * @param name
          *            Name of the course
          * @param credits
@@ -99,9 +106,11 @@ public class CourseCache {
          *            The initial state for the course
          */
         public CourseData(
+            String id,
             String name,
             int credits,
             RequirementState state) {
+            this.id = id;
             this.name = name;
             this.credits = credits;
             this.state = state;
@@ -129,14 +138,16 @@ public class CourseCache {
         }
 
         /**
-         * @param name the name to set
+         * @param name
+         *            the name to set
          */
         public void setName(String name) {
             this.name = name;
         }
 
         /**
-         * @param credits the credits to set
+         * @param credits
+         *            the credits to set
          */
         public void setCredits(int credits) {
             this.credits = credits;
@@ -150,6 +161,7 @@ public class CourseCache {
          */
         public void setState(RequirementState state) {
             this.state = state;
+            Prefs.setCourseState(id, state);
         }
     }
 }

@@ -35,7 +35,9 @@ public class Prefs {
     }
 
     /**
-     * Return the application context. This cannot be used for anything UI-related.
+     * Return the application context. This cannot be used for anything
+     * UI-related.
+     *
      * @return Application context
      */
     public static Context getApplicationContext() {
@@ -115,6 +117,15 @@ public class Prefs {
     }
 
     /**
+     * Get the global app course cache
+     *
+     * @return CourseCache object
+     */
+    public static CourseCache getCourseCache() {
+        return courseCache;
+    }
+
+    /**
      * Set the global app course cache, with data pulled from online
      *
      * @param courseCache
@@ -125,12 +136,12 @@ public class Prefs {
     }
 
     /**
-     * Get the global app course cache
+     * Return the checksheet object that was loaded from the XML file
      *
-     * @return CourseCache object
+     * @return Checksheet object
      */
-    public static CourseCache getCourseCache() {
-        return courseCache;
+    public static Checksheet getChecksheet() {
+        return checksheet;
     }
 
     /**
@@ -144,12 +155,13 @@ public class Prefs {
     }
 
     /**
-     * Return the checksheet object that was loaded from the XML file
+     * Get the global Cas authentication object that was set, or null if not
+     * currently logged in
      *
-     * @return Checksheet object
+     * @return Cas auth object
      */
-    public static Checksheet getChecksheet() {
-        return checksheet;
+    public static Cas getAuth() {
+        return auth;
     }
 
     /**
@@ -163,13 +175,85 @@ public class Prefs {
     }
 
     /**
-     * Get the global Cas authentication object that was set, or null if not
-     * currently logged in
+     * Get the total CLE credits for the specified area
      *
-     * @return Cas auth object
+     * @param area
+     *            CLE area, 1 - 7
+     * @return Number of credits for that area
      */
-    public static Cas getAuth() {
-        return auth;
+    public static int getCLE(int area) {
+        int[] allCLE = getAllCLE();
+        return allCLE[area - 1];
+    }
+
+    /**
+     * Set the total CLE area credits for the specified area
+     *
+     * @param area
+     *            CLE area, 1 - 7
+     * @param credits
+     *            Number of credits
+     */
+    public static void setCLE(int area, int credits) {
+        int[] allCLE = getAllCLE();
+        allCLE[area - 1] = credits;
+        setAllCLE(allCLE);
+    }
+
+    /**
+     * Return array of all CLE area credits
+     *
+     * @return Array of 7 elements, one for each area, ordered 1-7 (index starts
+     *         at 0)
+     */
+    public static int[] getAllCLE() {
+        String allStr = prefs.getString("cle", "0000000");
+        int[] allArray = new int[7];
+        for (int i = 0; i < 7; i++) {
+            allArray[i] = Integer.parseInt("" + allStr.charAt(i));
+        }
+        return allArray;
+    }
+
+    /**
+     * Set all the CLE area credits at once through the given ordered array
+     *
+     * @param credits
+     *            Array of CLE area credits ordered 1-7 (index starts at 0)
+     */
+    public static void setAllCLE(int[] credits) {
+        char[] allChars = new char[7];
+        for (int i = 0; i < 7; i++) {
+            allChars[i] = (char)(credits[i] + '0');
+        }
+        String allStr = new String(allChars);
+        prefs.edit().putString("cle", allStr).commit();
+    }
+
+    /**
+     * Get the saved course state stored for the course specified by the given
+     * ID, which is the ID used by CourseCache.
+     *
+     * @param id
+     *            Course ID used by CourseCache
+     * @return Course requirement state
+     */
+    public static RequirementState getCourseState(String id) {
+        String name = prefs.getString("credit-" + id, "NOTDONE");
+        return RequirementState.valueOf(name);
+    }
+
+    /**
+     * Saves course state for the specified course in long term storage. The
+     * given ID is the course ID used by CourseCache.
+     *
+     * @param id
+     *            Course ID used by CourseCache
+     * @param state
+     *            Course requirement state
+     */
+    public static void setCourseState(String id, RequirementState state) {
+        prefs.edit().putString("credit-" + id, state.name()).commit();
     }
 
     /**
