@@ -27,5 +27,8 @@
     <string name="change_major_text">Change Major</string>
     <string name="title_activity_major_picker">Select Major and Year</string>
     <string name="hello_world">Hello world!</string>
-
+    <string name="credit_down_text">-</string>
+    <string name="credit_up_text">+</string>
+    <string name="change_state">Change state</string>
+    
 </resources>

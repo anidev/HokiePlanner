@@ -132,8 +132,8 @@ public class ChecksheetLayoutPopulator {
                     .setText(getCourseName(course));
                 // This button changes the state of the course between not done,
                 // in progress, and done
-                Button stateButton =
-                    (Button)courseWidget
+                ImageButton stateButton =
+                    (ImageButton)courseWidget
                         .findViewById(R.id.course_state_button);
                 // Set the button's state based on what the state of this
                 // particular course is, according to the course cache. The
@@ -141,12 +141,15 @@ public class ChecksheetLayoutPopulator {
                 // the default "not done".
                 CourseCache.CourseData data =
                     Prefs.getCourseCache().getData(id);
-                stateButton.setText(data.getState().toString());
+                stateButton.setImageResource(data.getState()
+                    .getIcon());
+                stateButton.setContentDescription(data.getState()
+                    .toString());
                 stateButton
                     .setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Button button = (Button)v;
+                            ImageButton button = (ImageButton)v;
                             // Get the cached data again in case it was changed
                             @SuppressWarnings("hiding")
                             CourseCache.CourseData data =
@@ -167,7 +170,10 @@ public class ChecksheetLayoutPopulator {
                                     break;
                             }
                             data.setState(newState);
-                            button.setText(newState.toString());
+                            button.setImageResource(newState
+                                .getIcon());
+                            button.setContentDescription(newState
+                                .toString());
                         }
                     });
                 root.addView(courseWidget);

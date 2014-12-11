@@ -11,5 +11,6 @@
     <dimen name="navigation_drawer_width">240dp</dimen>
     <dimen name="login_width">240dp</dimen>
     <dimen name="checksheet_group_margin">20dp</dimen>
+    <dimen name="course_state_button_size">48dp</dimen>
 
 </resources>
