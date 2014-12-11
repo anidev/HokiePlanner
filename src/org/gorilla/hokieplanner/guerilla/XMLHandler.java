@@ -156,6 +156,9 @@ public class XMLHandler {
             else if (tagName.equals("group")) {
                 addGroup(item, tree, parent);
             }
+            else if (tagName.equals("info")) {
+                addGenericItem(item, tree, parent);
+            }
         }
     }
 
@@ -245,5 +248,28 @@ public class XMLHandler {
             RequiredCourse course = new RequiredCourse(dep, from, to);
             tree.addNode(course, parent);
         }
+    }
+
+    // ----------------------------------------------------------
+    /**
+     * A helper method to add a generic item into the tree
+     *
+     * @param genericItem
+     *            the generic item node to add
+     * @param tree
+     *            a tree to add to
+     * @param parent
+     *            the parent node to add other nodes
+     */
+    public void addGenericItem(
+        org.w3c.dom.Node genericItem,
+        Tree<RequiredItem> tree,
+        RequiredItem parent) {
+        Element element = (Element)genericItem;
+        Integer total =
+            Integer.parseInt(element.getAttribute("total"));
+        String detail = element.getAttribute("detail");
+        GenericItem item = new GenericItem(detail, total);
+        tree.addNode(item, parent);
     }
 }
