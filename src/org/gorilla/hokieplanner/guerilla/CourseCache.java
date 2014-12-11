@@ -90,6 +90,11 @@ public class CourseCache {
             }
             totalCredits += data.credits;
         }
+        // Add in CLE area credits
+        int[] cle = Prefs.getAllCLE();
+        for(int credits : cle) {
+            totalCredits += credits;
+        }
         Prefs.setTotalCredits(totalCredits);
     }
 

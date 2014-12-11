@@ -229,9 +229,14 @@ public class Prefs {
      *            Array of CLE area credits ordered 1-7 (index starts at 0)
      */
     public static void setAllCLE(int[] credits) {
+        int[] oldCredits = getAllCLE();
+        for(int c : oldCredits) {
+            creditCache -= c;
+        }
         char[] allChars = new char[7];
         for (int i = 0; i < 7; i++) {
             allChars[i] = (char)(credits[i] + '0');
+            creditCache += credits[i];
         }
         String allStr = new String(allChars);
         prefs.edit().putString("cle", allStr).commit();
