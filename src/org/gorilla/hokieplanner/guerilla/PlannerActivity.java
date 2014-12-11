@@ -78,10 +78,6 @@ public class PlannerActivity
         drawerLayout.setDrawerListener(mDrawerToggle);
 
         // Set up the navigation drawer
-        // FIXME: This uses the old (pre-Material design) navigation drawer
-        // system, so some related methods and classes may be deprecated until
-        // we figure out how to use navigation drawers with Material design,
-        // which appcompat_v7 is forcing us to use.
         navigationDrawerFragment =
             (NavigationDrawerFragment)getSupportFragmentManager()
                 .findFragmentById(R.id.main_navdrawer);
@@ -242,7 +238,16 @@ public class PlannerActivity
             progress.setMessage("Loading checksheet data...");
             progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progress.setCancelable(false);
-            new ChecksheetLoadTask(progress).execute(new Void[0]);
+            new ChecksheetLoadTask(progress, new Runnable() {
+                public void run() {
+                    FragmentManager fragmentManager =
+                        getSupportFragmentManager();
+                    PlaceholderFragment fragment =
+                        (PlaceholderFragment)fragmentManager
+                            .findFragmentById(R.id.main_container);
+                    fragment.updateCreditCount(fragment.getView());
+                }
+            }).execute(new Void[0]);
         }
     }
 
@@ -330,14 +335,7 @@ public class PlannerActivity
             majorValue.setText(AvailableChecksheets.valueOf(
                 Prefs.getSelectedChecksheet()).toString());
             // Display credit count
-            TextView creditsLabel =
-                (TextView)rootView
-                    .findViewById(R.id.credits_label);
-            String creditStr = creditsLabel.getText().toString();
-            creditStr =
-                creditStr.substring(0, creditStr.indexOf(':') + 1)
-                    + " " + Prefs.getTotalCredits();
-            creditsLabel.setText(creditStr);
+            updateCreditCount(rootView);
 
             Bundle extras = getActivity().getIntent().getExtras();
             String pid =
@@ -353,6 +351,23 @@ public class PlannerActivity
             String pidText = (pid != null ? pid + "@vt.edu" : "");
             ((TextView)rootView.findViewById(R.id.welcome_name_label))
                 .setText(pidText);
+        }
+
+        /**
+         * Update displayed count of total credits. Currently only available in
+         * welcome fragment view
+         */
+        public void updateCreditCount(View rootView) {
+            TextView creditsLabel =
+                (TextView)rootView.findViewById(R.id.credits_label);
+            if (creditsLabel == null) {
+                return;
+            }
+            String creditStr = creditsLabel.getText().toString();
+            creditStr =
+                creditStr.substring(0, creditStr.indexOf(':') + 1)
+                    + " " + Prefs.getTotalCredits();
+            creditsLabel.setText(creditStr);
         }
 
         /**

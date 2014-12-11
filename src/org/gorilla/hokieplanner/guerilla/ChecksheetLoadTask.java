@@ -22,6 +22,7 @@ public class ChecksheetLoadTask
     private static final String[] SEMESTERS = new String[] {
         Semester.FALL, Semester.SPRING     };
     private ProgressDialog        progress;
+    private Runnable              callback;
 
     /**
      * Construct the load task with a given Activity context and a progress
@@ -29,9 +30,15 @@ public class ChecksheetLoadTask
      *
      * @param progress
      *            ProgressDialog that will we displayed when the task starts
+     * @param callback
+     *            What should be run after the loading is finished (eg. to
+     *            update a view)
      */
-    public ChecksheetLoadTask(ProgressDialog progress) {
+    public ChecksheetLoadTask(
+        ProgressDialog progress,
+        Runnable callback) {
         this.progress = progress;
+        this.callback = callback;
     }
 
     protected void onPreExecute() {
@@ -63,6 +70,7 @@ public class ChecksheetLoadTask
 
     protected void onPostExecute(Void result) {
         progress.dismiss();
+        callback.run();
     }
 
     private void populateCourseCache(
