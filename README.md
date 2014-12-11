@@ -21,3 +21,11 @@ btn_notdone.png
 btn_done.png
     Derived from "Check symbol", part of "Material Design" by Google
     Downloaded from http://www.flaticon.com/free-icon/check-symbol_60731
+
+ic_down.png
+    Derived from "Downwards arrow key", part of "Material Design" by Google
+    Downloaded from http://www.flaticon.com/free-icon/downwards-arrow-key_61041
+
+ic_up.png
+    Derived from "Up arrow key", part of "Material Design" by Google
+    Downloaded from http://www.flaticon.com/free-icon/up-arrow-key_61032

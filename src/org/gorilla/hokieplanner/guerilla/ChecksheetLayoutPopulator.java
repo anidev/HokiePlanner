@@ -1,6 +1,7 @@
 package org.gorilla.hokieplanner.guerilla;
 
-import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.EditText;
 import java.util.Locale;
 import java.util.ArrayList;
 import android.annotation.SuppressLint;
@@ -60,7 +61,7 @@ public class ChecksheetLayoutPopulator {
             // CLE items are displayed differently in the GUI
             if (req.getName().toLowerCase(Locale.getDefault())
                 .equals("cle")) {
-                addCLEs(tree);
+                addCLEs(tree, groupLayout, req);
             }
             else {
                 addItems(tree, groupLayout, req);
@@ -86,11 +87,60 @@ public class ChecksheetLayoutPopulator {
      * @param tree
      *            The tree for the CLE requirement
      */
-    private void addCLEs(Tree<RequiredItem> tree) {
+    private void addCLEs(
+        Tree<RequiredItem> tree,
+        ViewGroup root,
+        Requirement req) {
         ArrayList<Node<RequiredItem>> nodes =
-            tree.getNodes().get(tree.getFirst()).getChildren();
+            tree.getNodes().get(req).getChildren();
+
         for (Node<RequiredItem> node : nodes) {
-            // TODO CLE gui stuff
+            // Create the widget that represents this CLE in the GUI
+            ViewGroup cleWidget =
+                (ViewGroup)inflater.inflate(R.layout.text_info, null);
+            // Set the area information and total
+            final Cle cle = (Cle)node.getData();
+            ((TextView)cleWidget.findViewById(R.id.area_text))
+                .setText("Area " + cle.getArea());
+            ((TextView)cleWidget.findViewById(R.id.credit_total_text))
+                .setText("/" + cle.getTotal());
+            // Initialize credit field to zero
+            final EditText creditField =
+                (EditText)cleWidget.findViewById(R.id.credit_text);
+            creditField.setText("" + Prefs.getCLE(cle.getArea()));
+            // Set up buttons
+            View.OnClickListener creditsBtnListener =
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String creditStr =
+                            creditField.getText().toString();
+                        try {
+                            int credits = Integer.parseInt(creditStr);
+                            int newCredits = credits;
+                            if (v.getId() == R.id.credit_down_button && credits > 0) {
+                                newCredits = credits - 1;
+                            } else if(v.getId() == R.id.credit_up_button && credits < cle.getTotal()) {
+                                newCredits = credits + 1;
+                            }
+                            creditField.setText("" + newCredits);
+                            Prefs.setCLE(cle.getArea(), newCredits);
+                        }
+                        catch (NumberFormatException e) {
+                            creditField.setText("0");
+                        }
+                    }
+                };
+            ImageButton downButton =
+                (ImageButton)cleWidget
+                    .findViewById(R.id.credit_down_button);
+            ImageButton upButton =
+                (ImageButton)cleWidget
+                    .findViewById(R.id.credit_up_button);
+            downButton.setOnClickListener(creditsBtnListener);
+            upButton.setOnClickListener(creditsBtnListener);
+            // Add to root view
+            root.addView(cleWidget);
         }
     }
 
