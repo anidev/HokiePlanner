@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <checksheet type="major" department="CS" year="2017">
-  <requirement name="cle">
-    <cle area="2" total="6"/>
+  <requirement type="cle">
+    <cle area="2" total="6" />
     <cle area="3" total="6" />
     <cle area="6" total="1" />
     <cle area="7" total="3" />
   </requirement>
   <requirement total="1" name="Required EngE Courses">
-    <group total="2">
-      <course department="enge" number="1024" />
-      <group total="1">
-        <course department="enge" number="1104" />
-        <course department="enge" number="1114" />
-      </group>
-    </group>
-    <course department="enge" number="1434" />
+    <course department="enge" number="1215" />
+    <course department="enge" number="1216" />
   </requirement>
   <requirement name="Natural Science Elective/Lab" total="3">
     <course department="chem" number="1035" />
@@ -57,14 +51,17 @@
     <course department="acis" number="4554" />
     <course department="acis" number="4564" />
     <course department="aoe" number="4434" />
+    <course department="bit" number="4554" />
+    <course department="bit" number="4564" />
     <course department="bit" number="4434" />
     <course department="bit" number="4444" />
     <course department="bit" number="4514" />
     <course department="bit" number="4544" />
+    <course department="bit" number="4574" />
     <course department="bit" number="4614" />
-    <course department="cdma" number="3605"/>
-    <course department="cdma" number="3606"/>
-    <course department="cdma" number="4604"/>
+    <course department="cmda" number="3605" />
+    <course department="cmda" number="3606" />
+    <course department="cmda" number="4604" />
     <course department="comm" number="4374" />
     <course department="ece" number="3544" />
     <course department="ece" number="4524" />
@@ -72,9 +69,11 @@
     <course department="ece" number="4560" />
     <course department="ece" number="4564" />
     <course department="ece" number="4580" />
+    <course department="ece" number="4704" />
     <course department="ece" number="4984" />
     <course department="geog" number="4314" />
     <course department="geog" number="4324" />
+    <course department="geog" number="4084" />
     <course department="geos" number="4084" />
     <course department="math" number="4175" />
     <course department="math" number="4176" />
@@ -104,13 +103,12 @@
       <course department="stat" number="4705" />
       <course department="stat" number="4714" />
   </requirement>
-  <requirement name="Math" total ="7">
+  <requirement name="Math" total ="6">
       <course department="math" number="1225"/>
       <course department="math" number="1226"/>
-      <course department="math" number="1224"/>
-      <course department="math" number="2224"/>
+      <course department="math" number="2204"/>
+      <course department="math" number="2114"/>
       <course department="math" number="2534"/>
-      <course department="math" number="2214"/>
       <course department="math" number="3134"/>
   </requirement>
   <requirement name="Core Classes" total = "11">
@@ -130,3 +128,4 @@
       <course department="cs" number="4944"/>
   </requirement>
 </checksheet>
+<!-- TODO add more detailed descriptions for the requirements -->

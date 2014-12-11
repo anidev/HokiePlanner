@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<checksheet type="major" department="CS" year="2017">
+<checksheet type="major" department="CS" year="2015">
   <requirement name="cle">
     <cle area="2" total="6"/>
     <cle area="3" total="6" />
@@ -53,7 +53,6 @@
     <course department="cs" from="3000" to="5999" />
     <course department="acis" number="4514" />
     <course department="acis" number="4524" />
-    <course department="acis" number="4684" />
     <course department="acis" number="4554" />
     <course department="acis" number="4564" />
     <course department="aoe" number="4434" />
@@ -62,9 +61,6 @@
     <course department="bit" number="4514" />
     <course department="bit" number="4544" />
     <course department="bit" number="4614" />
-    <course department="cdma" number="3605"/>
-    <course department="cdma" number="3606"/>
-    <course department="cdma" number="4604"/>
     <course department="comm" number="4374" />
     <course department="ece" number="3544" />
     <course department="ece" number="4524" />
@@ -77,10 +73,8 @@
     <course department="geog" number="4324" />
     <course department="geos" number="4084" />
     <course department="math" number="4175" />
-    <course department="math" number="4176" />
     <course department="math" number="4445" />
     <course department="math" number="4454" />
-    <course department="mus" number="3065" />
     
   </requirement>
   <requirement name="Capstone Requirement" total="1">
