@@ -69,7 +69,8 @@ public class ChecksheetLayoutPopulator {
                 headerText += ", Total: " + req.getTotal();
             }
             ((TextView)groupLayout
-                .findViewById(R.id.group_title_label)).setText(headerText);
+                .findViewById(R.id.group_title_label))
+                .setText(headerText);
             layout.addView(groupLayout);
             // Set the bottom margin for this group layout, so it is more
             // distinct from the other requirement groups
@@ -85,6 +86,40 @@ public class ChecksheetLayoutPopulator {
         }
     }
 
+    private void addTextInfo(
+        ViewGroup root,
+        String desc,
+        int initCredits,
+        int totalCredits,
+        TextInfoChangeListener changeListener) {
+        // Create the widget that represents this text info in the GUI
+        ViewGroup widget =
+            (ViewGroup)inflater.inflate(R.layout.text_info, null);
+        // Set the description and credit total
+        ((TextView)widget.findViewById(R.id.text_description))
+            .setText(desc);
+        ((TextView)widget.findViewById(R.id.credit_total_text))
+            .setText("/" + totalCredits);
+        // Initialize credit field to zero
+        final EditText creditField =
+            (EditText)widget.findViewById(R.id.credit_text);
+        creditField.setText("" + initCredits);
+        // Set up buttons
+        View.OnClickListener creditsBtnListener =
+            new TextInfoButtonListener(
+                creditField,
+                totalCredits,
+                changeListener);
+        ImageButton downButton =
+            (ImageButton)widget.findViewById(R.id.credit_down_button);
+        ImageButton upButton =
+            (ImageButton)widget.findViewById(R.id.credit_up_button);
+        downButton.setOnClickListener(creditsBtnListener);
+        upButton.setOnClickListener(creditsBtnListener);
+        // Add to root view
+        root.addView(widget);
+    }
+
     /**
      * Add the widgets for CLE requirements
      *
@@ -97,57 +132,19 @@ public class ChecksheetLayoutPopulator {
         Requirement req) {
         ArrayList<Node<RequiredItem>> nodes =
             tree.getNodes().get(req).getChildren();
-
         for (Node<RequiredItem> node : nodes) {
-            // Create the widget that represents this CLE in the GUI
-            ViewGroup cleWidget =
-                (ViewGroup)inflater.inflate(R.layout.text_info, null);
-            // Set the area information and total
             final Cle cle = (Cle)node.getData();
-            ((TextView)cleWidget.findViewById(R.id.area_text))
-                .setText("Area " + cle.getArea());
-            ((TextView)cleWidget.findViewById(R.id.credit_total_text))
-                .setText("/" + cle.getTotal());
-            // Initialize credit field to zero
-            final EditText creditField =
-                (EditText)cleWidget.findViewById(R.id.credit_text);
-            creditField.setText("" + Prefs.getCLE(cle.getArea()));
-            // Set up buttons
-            View.OnClickListener creditsBtnListener =
-                new View.OnClickListener() {
+            addTextInfo(
+                root,
+                "Area " + cle.getArea(),
+                Prefs.getCLE(cle.getArea()),
+                cle.getTotal(),
+                new TextInfoChangeListener() {
                     @Override
-                    public void onClick(View v) {
-                        String creditStr =
-                            creditField.getText().toString();
-                        try {
-                            int credits = Integer.parseInt(creditStr);
-                            int newCredits = credits;
-                            if (v.getId() == R.id.credit_down_button
-                                && credits > 0) {
-                                newCredits = credits - 1;
-                            }
-                            else if (v.getId() == R.id.credit_up_button
-                                && credits < cle.getTotal()) {
-                                newCredits = credits + 1;
-                            }
-                            creditField.setText("" + newCredits);
-                            Prefs.setCLE(cle.getArea(), newCredits);
-                        }
-                        catch (NumberFormatException e) {
-                            creditField.setText("0");
-                        }
+                    public void processChange(int newCredits) {
+                        Prefs.setCLE(cle.getArea(), newCredits);
                     }
-                };
-            ImageButton downButton =
-                (ImageButton)cleWidget
-                    .findViewById(R.id.credit_down_button);
-            ImageButton upButton =
-                (ImageButton)cleWidget
-                    .findViewById(R.id.credit_up_button);
-            downButton.setOnClickListener(creditsBtnListener);
-            upButton.setOnClickListener(creditsBtnListener);
-            // Add to root view
-            root.addView(cleWidget);
+                });
         }
     }
 
@@ -235,6 +232,15 @@ public class ChecksheetLayoutPopulator {
                     });
                 root.addView(courseWidget);
             }
+            else if (item instanceof GenericItem) {
+                GenericItem genItem = (GenericItem)item;
+                addTextInfo(
+                    root,
+                    genItem.getDetail(),
+                    0,
+                    genItem.getTotal(),
+                    null);
+            }
             else if (item instanceof CourseGroup) {
                 // Call addItem with this a new group layout as the root view
                 // and this group item as the parent node of the subtree
@@ -294,4 +300,71 @@ public class ChecksheetLayoutPopulator {
         }
     }
 
+    /**
+     * Listener that will process changes to the credit field in text_info
+     */
+    private static interface TextInfoChangeListener {
+        /**
+         * Process the change in credits
+         *
+         * @param newCredits
+         *            The new number of credits specified by the user
+         */
+        public void processChange(int newCredits);
+    }
+
+    /**
+     * Button listener to control text_info
+     */
+    private static class TextInfoButtonListener
+        implements View.OnClickListener {
+        private EditText               creditField;
+        private int                    totalCredits;
+        private TextInfoChangeListener changeListener;
+
+        /**
+         * Initialize this button listener to control the text_info up/down
+         * buttons, limiting the control to the given max
+         *
+         * @param creditField
+         *            EditText that this listener is controlling
+         * @param totalCredits
+         *            Max credits for the widget
+         * @param changeListener
+         *            The TextInfoChangeListener that will respond to the
+         *            changes in the credit field, can be null
+         */
+        public TextInfoButtonListener(
+            EditText creditField,
+            int totalCredits,
+            TextInfoChangeListener changeListener) {
+            this.creditField = creditField;
+            this.totalCredits = totalCredits;
+            this.changeListener = changeListener;
+        }
+
+        @Override
+        public void onClick(View v) {
+            String creditStr = creditField.getText().toString();
+            try {
+                int credits = Integer.parseInt(creditStr);
+                int newCredits = credits;
+                if (v.getId() == R.id.credit_down_button
+                    && credits > 0) {
+                    newCredits = credits - 1;
+                }
+                else if (v.getId() == R.id.credit_up_button
+                    && credits < totalCredits) {
+                    newCredits = credits + 1;
+                }
+                creditField.setText("" + newCredits);
+                if (changeListener != null) {
+                    changeListener.processChange(newCredits);
+                }
+            }
+            catch (NumberFormatException e) {
+                creditField.setText("0");
+            }
+        }
+    }
 }
