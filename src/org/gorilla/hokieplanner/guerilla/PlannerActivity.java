@@ -329,6 +329,15 @@ public class PlannerActivity
                     .findViewById(R.id.selected_major_value);
             majorValue.setText(AvailableChecksheets.valueOf(
                 Prefs.getSelectedChecksheet()).toString());
+            // Display credit count
+            TextView creditsLabel =
+                (TextView)rootView
+                    .findViewById(R.id.credits_label);
+            String creditStr = creditsLabel.getText().toString();
+            creditStr =
+                creditStr.substring(0, creditStr.indexOf(':') + 1)
+                    + " " + Prefs.getTotalCredits();
+            creditsLabel.setText(creditStr);
 
             Bundle extras = getActivity().getIntent().getExtras();
             String pid =
@@ -347,7 +356,7 @@ public class PlannerActivity
         }
 
         /**
-         * Helperd method to populate the checksheet fragment with data pulled
+         * Helper method to populate the checksheet fragment with data pulled
          * from the XML files. This calls into the dedicated class for
          * populating checksheets.
          *

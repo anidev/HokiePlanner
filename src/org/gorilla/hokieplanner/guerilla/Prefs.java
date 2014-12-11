@@ -1,5 +1,6 @@
 package org.gorilla.hokieplanner.guerilla;
 
+import android.util.Log;
 import com.vtaccess.Cas;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -19,6 +20,7 @@ public class Prefs {
     private static CourseCache       courseCache;
     private static Checksheet        checksheet;
     private static Cas               auth;
+    private static int               creditCache;
 
     /**
      * Initialize the static SharedPreferences object for global preferences
@@ -252,8 +254,33 @@ public class Prefs {
      * @param state
      *            Course requirement state
      */
-    public static void setCourseState(String id, RequirementState state) {
+    public static void setCourseState(
+        String id,
+        RequirementState state) {
         prefs.edit().putString("credit-" + id, state.name()).commit();
+    }
+
+    /**
+     * Get the cached number of total credits. This number is only valid while
+     * the app is running and must be recalculated every time the app starts.
+     *
+     * @return Total credits marked as completed
+     */
+    public static int getTotalCredits() {
+        return creditCache;
+    }
+
+    /**
+     * Set the cached number of total credits. This number will not be saved to
+     * long term storage, in order to prevent a bug or other issue from
+     * permanently making the count inaccurate.
+     *
+     * @param credits
+     *            Total credits calculated to be completed
+     */
+    public static void setTotalCredits(int credits) {
+        Prefs.creditCache = credits;
+        Log.d("HokiePlanner", "Credits: " + credits);
     }
 
     /**

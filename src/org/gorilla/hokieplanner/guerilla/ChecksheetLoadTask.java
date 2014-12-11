@@ -53,7 +53,11 @@ public class ChecksheetLoadTask
         // in) and get course info
         CourseCache cache = new CourseCache();
         Prefs.setCourseCache(cache);
+        // As course cache is populated, each CourseData object created will
+        // automatically sync with data stored in long term storage
         populateCourseCache(checksheet, cache);
+        // Calculate total credits, after course data has been loaded
+        cache.calculateTotalCredits();
         return null;
     }
 

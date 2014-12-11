@@ -78,6 +78,22 @@ public class CourseCache {
     }
 
     /**
+     * Calculate the total credit value and set it in Prefs. This is done by
+     * iterating through all the course data objects that are in the map and
+     * summing the credits of the ones marked as Done.
+     */
+    public void calculateTotalCredits() {
+        int totalCredits = 0;
+        for(CourseData data : map.values()) {
+            if(!data.state.equals(RequirementState.DONE)) {
+                continue;
+            }
+            totalCredits += data.credits;
+        }
+        Prefs.setTotalCredits(totalCredits);
+    }
+
+    /**
      * Supplemental class for representing course data downloaded from the
      * timetable. This class contains information such as course name and number
      * of credits that are not included in the checksheet XML files.
@@ -160,8 +176,38 @@ public class CourseCache {
          *            The new state
          */
         public void setState(RequirementState state) {
+            updateTotalCredits(this.state, state);
             this.state = state;
             Prefs.setCourseState(id, state);
+        }
+
+        /**
+         * Update the total credits value stored by Prefs in response to the
+         * state of this course changing
+         *
+         * @param oldState
+         *            State the course was in before
+         * @param newState
+         *            State the course was just changed to
+         */
+        private void updateTotalCredits(
+            RequirementState oldState,
+            RequirementState newState) {
+            if (oldState.equals(newState)) {
+                return;
+            }
+            int curCredits = Prefs.getTotalCredits();
+            if ((oldState.equals(RequirementState.NOTDONE) || oldState
+                .equals(RequirementState.INPROGRESS))
+                && newState.equals(RequirementState.DONE)) {
+                // Adding completed credits
+                curCredits += credits;
+            }
+            else if (oldState.equals(RequirementState.DONE)) {
+                // Removing completed credits
+                curCredits -= credits;
+            }
+            Prefs.setTotalCredits(curCredits);
         }
     }
 }

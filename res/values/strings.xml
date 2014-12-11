@@ -22,7 +22,7 @@
     <string name="group_title_text">Group Title</string>
     <string name="welcome_string">Welcome</string>
     <string name="selected_major_text">Selected Major:</string>
-    <string name="zero_credits_text">Total Credits: 0</string>
+    <string name="zero_credits_text">Total Credits Completed: 0</string>
     <string name="selected_year_text">Selected Year:</string>
     <string name="change_major_text">Change Major</string>
     <string name="title_activity_major_picker">Select Major and Year</string>
