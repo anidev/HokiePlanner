@@ -58,9 +58,7 @@ public class ChecksheetLayoutPopulator {
                     .findViewById(R.id.group_container);
             // Get root node of the tree, which should be a Requirement object
             Requirement req = (Requirement)tree.getFirst();
-            ((TextView)groupLayout
-                .findViewById(R.id.group_title_label)).setText(req
-                .getName() + ", Total: " + req.getTotal());
+            String headerText = req.getName();
             // CLE items are displayed differently in the GUI
             if (req.getName().toLowerCase(Locale.getDefault())
                 .equals("cle")) {
@@ -68,7 +66,10 @@ public class ChecksheetLayoutPopulator {
             }
             else {
                 addItems(tree, groupContainer, req);
+                headerText += ", Total: " + req.getTotal();
             }
+            ((TextView)groupLayout
+                .findViewById(R.id.group_title_label)).setText(headerText);
             layout.addView(groupLayout);
             // Set the bottom margin for this group layout, so it is more
             // distinct from the other requirement groups
