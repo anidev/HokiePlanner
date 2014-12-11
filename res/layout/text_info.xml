@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/area_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/credit_down_button"
+        android:layout_toStartOf="@+id/credit_down_button"
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#000000" />
+
+    <ImageButton
+        android:id="@+id/credit_down_button"
+        android:layout_width="@dimen/text_credit_button_size"
+        android:layout_height="@dimen/text_credit_button_size"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/credit_text"
+        android:layout_toStartOf="@+id/credit_text"
+        android:contentDescription="@string/credit_down_text"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_down" />
+
+    <EditText
+        android:id="@+id/credit_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/credit_total_text"
+        android:layout_toStartOf="@+id/credit_total_text"
+        android:gravity="center"
+        android:ems="1"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/credit_total_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/credit_up_button"
+        android:layout_toStartOf="@+id/credit_up_button"
+        android:text="" />
+
+    <ImageButton
+        android:id="@+id/credit_up_button"
+        android:layout_width="@dimen/text_credit_button_size"
+        android:layout_height="@dimen/text_credit_button_size"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/credit_up_text"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_up" />
+
+</RelativeLayout>
