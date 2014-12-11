@@ -31,7 +31,13 @@ public enum AvailableChecksheets {
     /**
      * Computer Science 2017
      */
-    CS2017("Computer Science 2017", "CS-2017");
+    CS2017("Computer Science 2017 (Draft)", "CS-2017"),
+
+    // ----------------------------------------------------------
+    /**
+     * Computer Science 2018
+     */
+    CS2018("Computer Science 2018 (Draft)", "CS-2018");
 
     // ----------------------------------------------------------
     /**
