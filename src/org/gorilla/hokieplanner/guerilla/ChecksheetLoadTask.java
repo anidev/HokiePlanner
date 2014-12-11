@@ -53,16 +53,7 @@ public class ChecksheetLoadTask
         // in) and get course info
         CourseCache cache = new CourseCache();
         Prefs.setCourseCache(cache);
-        // TODO Load cache data from storage such as requirement state
         populateCourseCache(checksheet, cache);
-        // The following is to simulate waiting to download course info from the
-        // timetable online
-        try {
-            Thread.sleep(1000);
-        }
-        catch (Exception e) {
-            // asdf
-        }
         return null;
     }
 
@@ -95,7 +86,7 @@ public class ChecksheetLoadTask
                     continue;
                 }
                 // Skip if for some reason there is no way to create an ID for
-// this course
+                // this course
                 final String id = CourseCache.getCourseID(course);
                 if (id == null) {
                     continue;
