@@ -53,6 +53,9 @@ public class ChecksheetLayoutPopulator {
                 (ViewGroup)inflater.inflate(
                     R.layout.checksheet_status_group,
                     null);
+            ViewGroup groupContainer =
+                (ViewGroup)groupLayout
+                    .findViewById(R.id.group_container);
             // Get root node of the tree, which should be a Requirement object
             Requirement req = (Requirement)tree.getFirst();
             ((TextView)groupLayout
@@ -61,10 +64,10 @@ public class ChecksheetLayoutPopulator {
             // CLE items are displayed differently in the GUI
             if (req.getName().toLowerCase(Locale.getDefault())
                 .equals("cle")) {
-                addCLEs(tree, groupLayout, req);
+                addCLEs(tree, groupContainer, req);
             }
             else {
-                addItems(tree, groupLayout, req);
+                addItems(tree, groupContainer, req);
             }
             layout.addView(groupLayout);
             // Set the bottom margin for this group layout, so it is more
@@ -239,10 +242,14 @@ public class ChecksheetLayoutPopulator {
                     (ViewGroup)inflater.inflate(
                         R.layout.checksheet_status_group,
                         null);
+                ViewGroup groupContainer =
+                    (ViewGroup)groupLayout
+                        .findViewById(R.id.group_container);
+                // Set up subgroup layout
                 ((TextView)groupLayout
                     .findViewById(R.id.group_title_label))
                     .setText("Required: " + group.getTotal());
-                addItems(tree, groupLayout, item);
+                addItems(tree, groupContainer, item);
                 root.addView(groupLayout);
             }
         }

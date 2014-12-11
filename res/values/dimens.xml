@@ -1,8 +1,8 @@
 <resources>
 
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_horizontal_margin">12dp</dimen>
+    <dimen name="activity_vertical_margin">12dp</dimen>
 
     <!--
          Per the design guidelines, navigation drawers should be between 240dp and 320dp:
@@ -13,5 +13,6 @@
     <dimen name="checksheet_group_margin">20dp</dimen>
     <dimen name="course_state_button_size">48dp</dimen>
     <dimen name="text_credit_button_size">40dp</dimen>
+    <dimen name="course_group_margin">14dp</dimen>
 
 </resources>
